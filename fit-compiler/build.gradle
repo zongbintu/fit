@@ -4,7 +4,7 @@ sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
 targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
 dependencies {
-    compile 'com.google.auto.service:auto-service:1.0-rc2'
-    compile 'com.squareup:javapoet:1.7.0'
-    compile project(':fit-annotations')
+  compile project(':fit-annotations')
+  compile deps.autoservice
+  compile deps.javapoet
 }

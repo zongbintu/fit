@@ -1,14 +1,16 @@
 package com.example.fit;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
-import com.example.fit.model.Account;
-import com.example.fit.model.Address;
 import com.example.fit.model.User;
 import fit.Fit;
+import java.util.HashSet;
+import java.util.Set;
 
-//@Test("haha")
 public class MainActivity extends Activity {
   TextView contentTextView;
 
@@ -17,18 +19,18 @@ public class MainActivity extends Activity {
     setContentView(R.layout.activity_main);
     contentTextView = (TextView) findViewById(R.id.content_tv);
 
-    User user = new User("Three.Tu", 1);
+    Set<String> hobby = new HashSet<>();
+    hobby.add("swim");
+    hobby.add("basketball");
+    hobby.add("program");
+
+    User user = new User("Three.Tu", 1, 100.99, hobby);
+    user.c = '︾';
     Fit.save(this, user);
+    SharedPreferences sharedPreferences =
+        this.getSharedPreferences("com.example.fit.model.User", Context.MODE_PRIVATE);
+    Log.d("char", String.valueOf(sharedPreferences.getInt("c", 0)));
 
-    Account account = new Account("un", "111111");
-    Fit.save(this, account);
-
-    Address address = new Address();
-    address.address = "China";
-
-    Fit.save(this, address);
-
-    contentTextView.setText(
-        Fit.get(this, User.class).name + "\n" + Fit.get(this, Account.class).userName);
+    contentTextView.setText(Fit.get(this, User.class).name);
   }
 }
