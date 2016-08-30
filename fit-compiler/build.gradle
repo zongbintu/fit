@@ -1,4 +1,6 @@
 apply plugin: 'java'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.2tu'
 
 sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
 targetCompatibility = rootProject.ext.targetCompatibilityVersion

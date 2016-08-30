@@ -1,10 +1,7 @@
 package com.example.fit;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import com.example.fit.model.User;
 import fit.Fit;
@@ -24,13 +21,10 @@ public class MainActivity extends Activity {
     hobby.add("basketball");
     hobby.add("program");
 
-    User user = new User("Three.Tu", 1, 100.99, hobby);
+    User user = new User("Three.Tu", 1, 100.99, hobby, "007",999999L);
     user.c = '︾';
     Fit.save(this, user);
-    SharedPreferences sharedPreferences =
-        this.getSharedPreferences("com.example.fit.model.User", Context.MODE_PRIVATE);
-    Log.d("char", String.valueOf(sharedPreferences.getInt("c", 0)));
 
-    contentTextView.setText(Fit.get(this, User.class).name);
+    contentTextView.setText(Fit.get(this, User.class).toString());
   }
 }

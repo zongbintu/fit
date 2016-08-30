@@ -81,7 +81,11 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
         List<Element> fieldElements = new ArrayList<>();
         for (Element memberElement : elementUtils.getAllMembers(enclosingElement)) {
-          if (memberElement.getKind() == ElementKind.FIELD) {
+          Set<Modifier> modifiers = memberElement.getModifiers();
+          //add not static /private field
+          if (memberElement.getKind() == ElementKind.FIELD
+              && !modifiers.contains(Modifier.PRIVATE)
+              && !modifiers.contains(Modifier.STATIC)) {
             fieldElements.add(memberElement);
           }
         }
@@ -136,13 +140,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         .addStatement("SharedPreferences.Editor editor = sharedPreferences.edit()");
 
     for (Element element : fieldElements) {
-      TypeName fieldTypeName = TypeName.get(element.asType());
+      TypeName fieldTypeName = unbox(TypeName.get(element.asType()));
       String putMethod = "";
       String valueL = "obj.$L";
-      System.out.println("filed:" + fieldTypeName + "  " + (TypeName.INT.equals(fieldTypeName)
-          || TypeName.BYTE.equals(fieldTypeName)
-          || TypeName.SHORT.equals(fieldTypeName)
-          || TypeName.CHAR.equals(fieldTypeName)));
       // FIXME: 8/29/16 type
       if (TypeName.get(String.class).equals(fieldTypeName)) {
         putMethod = "putString";
@@ -188,7 +188,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     result.addStatement("$T obj = new $T()", targetType, targetType);
 
     for (Element element : fieldElements) {
-      TypeName fieldTypeName = TypeName.get(element.asType());
+      TypeName fieldTypeName = unbox(TypeName.get(element.asType()));
       String method = "";
       String defaultValue = "0";
       String cast = "";
@@ -228,6 +228,13 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     }
     result.addStatement("return obj").returns(targetType);
     return result.build();
+  }
+
+  private TypeName unbox(TypeName typeName) {
+    if (typeName.isBoxedPrimitive()) {
+      return typeName.unbox();
+    }
+    return typeName;
   }
 
   private void logParsingError(Element element, Class<? extends Annotation> annotation,
