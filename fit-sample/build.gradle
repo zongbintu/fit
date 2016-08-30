@@ -26,10 +26,6 @@ android {
 }
 
 dependencies {
-  //  compile 'com.github.2tu.fit:fit:0.1.1'
-  //  apt 'com.github.2tu.fit:fit-compiler:0.1.1'
-  //  compile 'com.github.2tu.fit:fit:0.0.5'
-  //  apt 'com.github.2tu.fit:fit-compiler:0.0.5'
-  compile project(':fit')
-  apt project(':fit-compiler')
+  compile 'com.github.2tu.fit:fit:0.0.7'
+  apt 'com.github.2tu.fit:fit-compiler:0.0.7'
 }

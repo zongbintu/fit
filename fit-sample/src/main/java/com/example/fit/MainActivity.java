@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
 
     contentTextView.setText(Fit.get(this, User.class).toString());
 
+    //throw RuntimeException
     //Fit.get(this, Address.class);
   }
 }
