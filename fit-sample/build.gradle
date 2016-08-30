@@ -21,7 +21,10 @@ android {
 }
 
 dependencies {
-  compile fileTree(include: ['*.jar'], dir: 'libs')
+//  compile 'com.github.2tu.fit:fit:0.1.1'
+//  apt 'com.github.2tu.fit:fit-compiler:0.1.1'
+//  compile 'com.github.2tu.fit:fit:0.0.4'
+//  apt 'com.github.2tu.fit:fit-compiler:0.0.4'
   compile project(':fit')
   apt project(':fit-compiler')
 }
