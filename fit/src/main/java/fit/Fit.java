@@ -24,10 +24,12 @@ public final class Fit {
       //noinspection unchecked
       mmClass.newInstance().save(context, o);
       if (debug) Log.d(TAG, "HIT: Loaded MM class and constructor.");
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException("Miss SharedPreferenceAble", e);
     } catch (InstantiationException e) {
-      e.printStackTrace();
+      throw new RuntimeException(o.toString() + " can't instance ", e);
     } catch (IllegalAccessException e) {
-      e.printStackTrace();
+      throw new RuntimeException(o.toString() + " can't instance ", e);
     }
   }
 
@@ -35,20 +37,16 @@ public final class Fit {
     try {
       Class<? extends MM> mmClass = findMMForClass(clazz);
       return (T) mmClass.newInstance().get(context);
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException("Miss SharedPreferenceAble", e);
     } catch (InstantiationException e) {
-      e.printStackTrace();
+      throw new RuntimeException(clazz.getName() + " can't instance ", e);
     } catch (IllegalAccessException e) {
-      e.printStackTrace();
+      throw new RuntimeException(clazz.getName() + " can't instance ", e);
     }
-    return null;
   }
 
-  private static Class<? extends MM> findMMForClass(Class clazz) {
-    try {
-      return (Class<? extends MM>) Class.forName(clazz.getName() + "_Preference");
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-    return null;
+  private static Class<? extends MM> findMMForClass(Class clazz) throws ClassNotFoundException {
+    return (Class<? extends MM>) Class.forName(clazz.getName() + "_Preference");
   }
 }

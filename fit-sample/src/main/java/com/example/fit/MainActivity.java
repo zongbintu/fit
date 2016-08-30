@@ -21,10 +21,12 @@ public class MainActivity extends Activity {
     hobby.add("basketball");
     hobby.add("program");
 
-    User user = new User("Three.Tu", 1, 100.99, hobby, "007",999999L);
+    User user = new User("Three.Tu", 1, 100.99, hobby, "007", 999999L);
     user.c = '︾';
     Fit.save(this, user);
 
     contentTextView.setText(Fit.get(this, User.class).toString());
+
+    //Fit.get(this, Address.class);
   }
 }
