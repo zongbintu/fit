@@ -12,7 +12,6 @@ import fit.SharedPreferenceAble;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,25 +75,12 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
       String packageName = getPackageName(enclosingElement);
 
-      //find non-parameter constructor by tClass
-      String tClassName = enclosingElement.toString();
-
-      try {
-        Class tClass = Class.forName(enclosingElement.toString());
-        Constructor constructor = tClass.getConstructor(null);
-      } catch (ClassNotFoundException e) {
-        throw new RuntimeException("Unable to find T for " + tClassName, e);
-      } catch (NoSuchMethodException e) {
-        throw new RuntimeException("Unable to find non-parameter constructor for " + tClassName, e);
-      } catch (SecurityException e) {
-        throw new RuntimeException("Unable to find non-parameter constructor for " + tClassName, e);
-      }
       try {
         String className = getClassName(enclosingElement, packageName);
         ClassName preferenceClassName = ClassName.get(packageName, className + "_Preference");
 
         boolean isFinal = enclosingElement.getModifiers().contains(Modifier.FINAL);
-
+        boolean hasNonParaConstructor = false;
         List<Element> fieldElements = new ArrayList<>();
         for (Element memberElement : elementUtils.getAllMembers(enclosingElement)) {
           Set<Modifier> modifiers = memberElement.getModifiers();
@@ -103,7 +89,14 @@ import static javax.lang.model.element.Modifier.PUBLIC;
               && !modifiers.contains(Modifier.PRIVATE)
               && !modifiers.contains(Modifier.STATIC)) {
             fieldElements.add(memberElement);
+          } else if (memberElement.getKind() == ElementKind.CONSTRUCTOR && memberElement.toString()
+              .equals(className + "()")) {
+            hasNonParaConstructor = true;
           }
+        }
+
+        if (!hasNonParaConstructor) {
+          throw new RuntimeException("Fit can't use no non-parameter constructor");
         }
 
         JavaFile javaFile = JavaFile.builder(preferenceClassName.packageName(),

@@ -21,6 +21,7 @@ import java.util.Set;
   Long bankcard;
 
   public User() {
+
   }
 
   public User(String name, int age, double score, Set<String> hobby, String idcard, Long bankcard) {
