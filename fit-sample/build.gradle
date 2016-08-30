@@ -22,7 +22,6 @@ android {
 
 dependencies {
   compile fileTree(include: ['*.jar'], dir: 'libs')
-  apt project(':fit-compiler')
   compile project(':fit')
-  compile project(':fit-annotations')
+  apt project(':fit-compiler')
 }

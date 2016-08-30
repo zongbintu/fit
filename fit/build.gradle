@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.2tu'
 
 android {
   compileSdkVersion rootProject.ext.compileSdkVersion
@@ -16,4 +15,7 @@ android {
       consumerProguardFiles 'proguard-rules.pro'
     }
   }
+}
+dependencies {
+  compile project(':fit-annotations')
 }
