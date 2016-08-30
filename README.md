@@ -1,5 +1,7 @@
 # Fit
 
+[![](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit)
+
 Fit is a library use apt by SharedPreferences store primitive field as Object.
 
 ## Installation
@@ -13,7 +15,7 @@ dependencies {
 ```
 
 ## Usage
-annotation Bean class.
+annotation model class.
 ```java
 @SharedPreferenceAble
 ```
