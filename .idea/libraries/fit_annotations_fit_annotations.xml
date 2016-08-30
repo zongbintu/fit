@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="fit-annotations.fit-annotations">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/fit-annotations/build/libs/fit-annotations.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

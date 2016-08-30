@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/fit-sample/app.iml" filepath="$PROJECT_DIR$/fit-sample/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fit/fit.iml" filepath="$PROJECT_DIR$/fit/fit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fit-0.1.0.iml" filepath="$PROJECT_DIR$/fit-0.1.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fit-annotations/fit-annotations.iml" filepath="$PROJECT_DIR$/fit-annotations/fit-annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fit-compiler/fit-compiler.iml" filepath="$PROJECT_DIR$/fit-compiler/fit-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fit-sample/fit-sample.iml" filepath="$PROJECT_DIR$/fit-sample/fit-sample.iml" />
+    </modules>
+  </component>
+</project>
