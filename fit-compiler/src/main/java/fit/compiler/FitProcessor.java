@@ -133,6 +133,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     result.addSuperinterface(parameterizedTypeName);
     result.addMethod(createPreferenceSaveMethod(result, targetTypeName, fieldElements));
     result.addMethod(createPreferenceGetMethod(result, targetTypeName, fieldElements));
+    result.addMethod(createPreferenceClearMethod(targetTypeName));
     return result.build();
   }
 
@@ -236,6 +237,19 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           element.getSimpleName(), defaultValue);
     }
     result.addStatement("return obj").returns(targetType);
+    return result.build();
+  }
+
+  private MethodSpec createPreferenceClearMethod(TypeName targetType) {
+    MethodSpec.Builder result = MethodSpec.methodBuilder("clear")
+        .addAnnotation(Override.class)
+        .addModifiers(PUBLIC)
+        .addParameter(CONTEXT, "context");
+
+    result.addStatement(
+        "$T sharedPreferences = context.getSharedPreferences($S, Context.MODE_PRIVATE)",
+        SHARED_PREFERENCES, targetType.toString());
+    result.addStatement("sharedPreferences.edit().clear()");
     return result.build();
   }
 

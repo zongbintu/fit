@@ -10,4 +10,6 @@ public interface MM<T> {
   void save(Context context, T obj);
 
   T get(Context context);
+
+  void clear(Context context);
 }
