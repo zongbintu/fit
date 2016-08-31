@@ -46,6 +46,28 @@ public final class Fit {
     }
   }
 
+  public static void clear(Context context, Object o) {
+    Class cls = o.getClass();
+
+    String clsName = cls.getName();
+    if (clsName.startsWith("android.") || clsName.startsWith("java.")) {
+      if (debug) Log.d(TAG, "MISS: Reached framework class. Abandoning search.");
+      return;
+    }
+    try {
+      Class<? extends MM> mmClass = findMMForClass(cls);
+      //noinspection unchecked
+      mmClass.newInstance().clear(context);
+      if (debug) Log.d(TAG, "HIT: Loaded MM class and constructor.");
+    } catch (ClassNotFoundException e) {
+      throw new RuntimeException("Miss SharedPreferenceAble", e);
+    } catch (InstantiationException e) {
+      throw new RuntimeException(o.toString() + " can't instance ", e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(o.toString() + " can't instance ", e);
+    }
+  }
+
   private static Class<? extends MM> findMMForClass(Class clazz) throws ClassNotFoundException {
     return (Class<? extends MM>) Class.forName(clazz.getName() + "_Preference");
   }
