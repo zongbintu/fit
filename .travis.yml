@@ -10,4 +10,5 @@ android:
   - build-tools-24.0.1
   - android-24
 script:
+  - chmod +x gradlew
   - ./gradlew build

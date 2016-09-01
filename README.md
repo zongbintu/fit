@@ -1,6 +1,6 @@
 # Fit
 
-[![](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit)
+[![](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit)[![Build Status](https://travis-ci.org/2tu/fit.svg?branch=master)](https://travis-ci.org/2tu/fit)
 
 Fit is a library use apt by SharedPreferences store primitive field as Object.
 
