@@ -1,11 +1,8 @@
 # Fit
 
-[![](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit)[![Build Status](https://travis-ci.org/2tu/fit.svg?branch=master)](https://travis-ci.org/2tu/fit)
+[![Release](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit) [![Build Status](https://travis-ci.org/2tu/fit.svg?branch=master)](https://travis-ci.org/2tu/fit) [![Apache License](http://img.shields.io/hexpm/l/plug.svg?style=flat)](https://github.com/kentarosasaki/raspberrypi/blob/master/LICENSE)
 
 Fit is a library use apt by SharedPreferences store primitive field as Object.
-
-## What's new (0.1.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
-* Save model as SharedPreferences(private static complex field not support)
 
 ## Installation
 Add it in your root build.gradle at the end of repositories:
@@ -50,6 +47,5 @@ User user = Fit.get(this, User.class);
 ```
 
 
-
-## License
-Please see [LICENSE](/LICENSE)
+## What's new (0.1.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
+* Save model as SharedPreferences(private static complex field not support)

@@ -1,5 +1,5 @@
 language: android
-jdk: oraclejdk8
+jdk: oraclejdk7
 env:
   global:
     - ANDROID_TARGET=android-24
@@ -11,4 +11,8 @@ android:
   - android-24
 script:
   - chmod +x gradlew
-  - ./gradlew build
+  - ./gradlew clean build
+
+# Disable Travis container-based infrastructure to correct
+# resource consumption in gradle presumably due to dexing.
+sudo: true
