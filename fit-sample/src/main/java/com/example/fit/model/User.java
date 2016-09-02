@@ -1,51 +1,63 @@
 package com.example.fit.model;
 
 import fit.SharedPreferenceAble;
-import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @auther Tu enum@foxmail.com
  * @date 16/8/25
  */
 @SharedPreferenceAble public class User {
-  public static final String TAG = User.class.getSimpleName();
   public String name;
+  public HashSet<String> hobby;
+
+  public byte tbyte;
+  public short tshort;
   public int age;
+  public long tlong;
+
+  public float tfloat;
   public double score;
-  public Set<String> hobby;
+
+  public boolean tboolean;
+
   public char c;
-  public short s;
-  public byte sex;
-  public float f;
-  private String idcard;
-  Long bankcard;
+
+  public Byte sex;
+  public Short s;
+  public Integer integer;
+  public Long aLong;
+
+  public Float aFloat;
+  public Double aDouble;
+
+  public Boolean aBoolean;
+  public Character character;
 
   public User() {
 
   }
 
-  public User(String name, int age, double score, Set<String> hobby, String idcard, Long bankcard) {
-    this.name = name;
-    this.age = age;
-    this.score = score;
-    this.hobby = hobby;
-    this.idcard = idcard;
-    this.bankcard = bankcard;
-  }
-
   @Override public String toString() {
     return "User{" +
-        "TAG='" + TAG + '\'' +
-        ",name='" + name + '\'' +
-        ", age=" + age +
-        ", score=" + score +
+        "name='" + name + '\'' +
         ", hobby=" + hobby +
+        ", tbyte=" + tbyte +
+        ", tshort=" + tshort +
+        ", age=" + age +
+        ", tlong=" + tlong +
+        ", tfloat=" + tfloat +
+        ", score=" + score +
+        ", tboolean=" + tboolean +
         ", c=" + c +
-        ", s=" + s +
         ", sex=" + sex +
-        ", f=" + f +
-        ", idcard='" + idcard + '\'' +
-        ", bankcard=" + bankcard +
+        ", s=" + s +
+        ", integer=" + integer +
+        ", aLong=" + aLong +
+        ", aFloat=" + aFloat +
+        ", aDouble=" + aDouble +
+        ", aBoolean=" + aBoolean +
+        ", character=" + character +
         '}';
   }
 }

@@ -36,6 +36,14 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   private static final ClassName CONTEXT = ClassName.get("android.content", "Context");
   private static final ClassName SHARED_PREFERENCES =
       ClassName.get("android.content", "SharedPreferences");
+  private static final ClassName UTILS = ClassName.get("fit.internal", "Utils");
+
+  //Set<String>
+  TypeName hoverboard = TypeName.get(String.class);
+  ClassName set = ClassName.get("java.util", "Set");
+  ClassName hashSet = ClassName.get("java.util", "HashSet");
+  TypeName setOfHoverboards = ParameterizedTypeName.get(set, hoverboard);
+  TypeName hashSetOfHoverboards = ParameterizedTypeName.get(hashSet, hoverboard);
 
   private static final String METHOD_GET_STRING = "getString";
   private static final String METHOD_GET_Int = "getInt";
@@ -144,40 +152,59 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         .addModifiers(PUBLIC)
         .addParameter(CONTEXT, "context")
         .addParameter(targetType, "obj")
-        .addStatement(
-            "$T sharedPreferences = context.getSharedPreferences($S, Context.MODE_PRIVATE)",
-            SHARED_PREFERENCES, targetType.toString())
-        .addStatement("SharedPreferences.Editor editor = sharedPreferences.edit()");
+        .addStatement("SharedPreferences.Editor editor = $T.getSharedPreferenceEditor(context, $S)",
+            UTILS, targetType.toString());
 
     for (Element element : fieldElements) {
-      TypeName fieldTypeName = unbox(TypeName.get(element.asType()));
+      TypeName fieldTypeName = TypeName.get(element.asType());
+      TypeName unboxFieldTypeName = unbox(fieldTypeName);
       String putMethod = "";
       String valueL = "obj.$L";
-      // FIXME: 8/29/16 type
-      if (TypeName.get(String.class).equals(fieldTypeName)) {
+
+      if (TypeName.get(String.class).equals(unboxFieldTypeName)) {
         putMethod = "putString";
-      } else if (TypeName.BOOLEAN.equals(fieldTypeName)) {
+      } else if (TypeName.BOOLEAN.equals(unboxFieldTypeName)) {
         putMethod = "putBoolean";
-      } else if (TypeName.FLOAT.equals(fieldTypeName)) {
+      } else if (TypeName.FLOAT.equals(unboxFieldTypeName)) {
         putMethod = "putFloat";
-      } else if (TypeName.INT.equals(fieldTypeName)
-          || TypeName.BYTE.equals(fieldTypeName)
-          || TypeName.SHORT.equals(fieldTypeName)
-          || TypeName.CHAR.equals(fieldTypeName)) {
+      } else if (TypeName.INT.equals(unboxFieldTypeName)
+          || TypeName.BYTE.equals(unboxFieldTypeName)
+          || TypeName.SHORT.equals(unboxFieldTypeName)
+          || TypeName.CHAR.equals(unboxFieldTypeName)) {
         putMethod = "putInt";
-      } else if (TypeName.LONG.equals(fieldTypeName)) {
+      } else if (TypeName.LONG.equals(unboxFieldTypeName)) {
         putMethod = "putLong";
-      } else if (TypeName.DOUBLE.equals(fieldTypeName)) {
+      } else if (TypeName.DOUBLE.equals(unboxFieldTypeName)) {
         putMethod = "putLong";
         valueL = "Double.doubleToLongBits(" + valueL + ")";
+      } else if (setOfHoverboards.equals(unboxFieldTypeName) || hashSetOfHoverboards.equals(
+          unboxFieldTypeName)) {
+        putMethod = "putStringSet";
       } else {
         continue;
       }
-      //else if (TypeName.get(Set.class).equals(fieldTypeName)) {
-      //  putMethod = "putStringSet";
-      //}
-      result.addStatement("editor.$L($S, " + valueL + ")", putMethod, element.getSimpleName(),
-          element.getSimpleName());
+      if (fieldTypeName.isBoxedPrimitive()) {
+        if (TypeName.DOUBLE.equals(unboxFieldTypeName)) {
+          result.addStatement(
+              "editor.$L($S, Double.doubleToLongBits($T.checkNonNull(obj.$L) ?  obj.$L : 0))",
+              putMethod, element.getSimpleName(), UTILS, element.getSimpleName(),
+              element.getSimpleName());
+        } else if (TypeName.CHAR.equals(unboxFieldTypeName)
+            || TypeName.BYTE.equals(unboxFieldTypeName)
+            || TypeName.SHORT.equals(unboxFieldTypeName)
+            || TypeName.INT.equals(unboxFieldTypeName)
+            || TypeName.LONG.equals(unboxFieldTypeName)
+            || TypeName.FLOAT.equals(unboxFieldTypeName)) {
+          result.addStatement("editor.$L($S, $T.checkNonNull(obj.$L) ? obj.$L : 0)", putMethod,
+              element.getSimpleName(), UTILS, element.getSimpleName(), element.getSimpleName());
+        } else if (TypeName.BOOLEAN.equals(unboxFieldTypeName)) {
+          result.addStatement("editor.$L($S, $T.checkNonNull(obj.$L) ? obj.$L : false)", putMethod,
+              element.getSimpleName(), UTILS, element.getSimpleName(), element.getSimpleName());
+        }
+      } else {
+        result.addStatement("editor.$L($S, " + valueL + ")", putMethod, element.getSimpleName(),
+            element.getSimpleName());
+      }
     }
 
     result.addStatement("editor.apply()");
@@ -229,7 +256,15 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         method = "getLong";
       } else if (TypeName.DOUBLE.equals(fieldTypeName)) {
         method = "getLong";
-        value = "$L Double.longBitsToDouble(sharedPreferences.$L($S,$L))";
+        value = "$L Double.longBitsToDouble(sharedPreferences.$L($S, $L))";
+      } else if (setOfHoverboards.equals(fieldTypeName) || hashSetOfHoverboards.equals(
+          fieldTypeName)) {
+        method = "getStringSet";
+        defaultValue = null;
+        value = "($T) sharedPreferences.$L($S, $L)";
+        result.addStatement("obj.$N = " + value, element.getSimpleName(), hashSetOfHoverboards,
+            method, element.getSimpleName(), defaultValue);
+        continue;
       } else {
         continue;
       }
@@ -245,11 +280,8 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         .addAnnotation(Override.class)
         .addModifiers(PUBLIC)
         .addParameter(CONTEXT, "context");
-
-    result.addStatement(
-        "$T sharedPreferences = context.getSharedPreferences($S, Context.MODE_PRIVATE)",
-        SHARED_PREFERENCES, targetType.toString());
-    result.addStatement("sharedPreferences.edit().clear()");
+    result.addStatement("$T.getSharedPreferenceEditor(context, $S).clear().apply()", UTILS,
+        targetType.toString());
     return result.build();
   }
 

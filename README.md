@@ -45,7 +45,10 @@ get
 ```java
 User user = Fit.get(this, User.class);
 ```
-
+clear
+```java
+Fit.clear(this, User.class);
+```
 
 ## What's new (0.1.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
 * Save model as SharedPreferences(private static complex field not support)
