@@ -21,7 +21,6 @@ public final class Fit {
     }
     try {
       Class<? extends MM> mmClass = findMMForClass(cls);
-      //noinspection unchecked
       mmClass.newInstance().save(context, o);
       if (debug) Log.d(TAG, "HIT: Loaded MM class and constructor.");
     } catch (ClassNotFoundException e) {
@@ -46,25 +45,22 @@ public final class Fit {
     }
   }
 
-  public static void clear(Context context, Object o) {
-    Class cls = o.getClass();
-
-    String clsName = cls.getName();
+  public static void clear(Context context, Class clazz) {
+    String clsName = clazz.getName();
     if (clsName.startsWith("android.") || clsName.startsWith("java.")) {
       if (debug) Log.d(TAG, "MISS: Reached framework class. Abandoning search.");
       return;
     }
     try {
-      Class<? extends MM> mmClass = findMMForClass(cls);
-      //noinspection unchecked
+      Class<? extends MM> mmClass = findMMForClass(clazz);
       mmClass.newInstance().clear(context);
       if (debug) Log.d(TAG, "HIT: Loaded MM class and constructor.");
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Miss SharedPreferenceAble", e);
     } catch (InstantiationException e) {
-      throw new RuntimeException(o.toString() + " can't instance ", e);
+      throw new RuntimeException(clazz.toString() + " can't instance ", e);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(o.toString() + " can't instance ", e);
+      throw new RuntimeException(clazz.toString() + " can't instance ", e);
     }
   }
 
