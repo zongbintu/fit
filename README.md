@@ -25,8 +25,8 @@ Add the following dependency to your `build.gradle` file:
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.1.2'
-    apt 'com.github.2tu.fit:fit-compiler:0.1.2'
+    compile 'com.github.2tu.fit:fit:0.1.3'
+    apt 'com.github.2tu.fit:fit-compiler:0.1.3'
 }
 ```
 
@@ -50,5 +50,6 @@ clear
 Fit.clear(this, User.class);
 ```
 
-## What's new (0.1.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
-* Save model as SharedPreferences(private static complex field not support)
+## What's new (0.1.3) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
+* add inner class check
+* add private constructor check

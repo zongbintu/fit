@@ -8,4 +8,11 @@ dependencies {
   compile project(':fit-annotations')
   compile deps.autoservice
   compile deps.javapoet
+
+  testCompile deps.android
+  testCompile deps.junit
+  testCompile deps.compiletesting
+  testCompile deps.autocommon
+  testCompile deps.truth
+  testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
