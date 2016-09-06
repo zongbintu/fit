@@ -21,6 +21,7 @@ import javax.annotation.processing.Filer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -97,8 +98,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
               && !modifiers.contains(Modifier.PRIVATE)
               && !modifiers.contains(Modifier.STATIC)) {
             fieldElements.add(memberElement);
-          } else if (memberElement.getKind() == ElementKind.CONSTRUCTOR && memberElement.toString()
-              .equals(className + "()")) {
+          } else if (memberElement.getKind() == ElementKind.CONSTRUCTOR
+              && !memberElement.getModifiers().contains(Modifier.PRIVATE)
+              && memberElement.toString().equals(className + "()")) {
             hasNonParaConstructor = true;
           }
         }
@@ -320,5 +322,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     //annotations.add(SharedPreferenceAble.class);
     //return annotations;
     return Collections.singleton(SharedPreferenceAble.class.getCanonicalName());
+  }
+
+  @Override public SourceVersion getSupportedSourceVersion() {
+    return SourceVersion.latestSupported();
   }
 }
