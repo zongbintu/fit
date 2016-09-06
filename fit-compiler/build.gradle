@@ -14,4 +14,5 @@ dependencies {
   testCompile deps.compiletesting
   testCompile deps.autocommon
   testCompile deps.truth
+  testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
