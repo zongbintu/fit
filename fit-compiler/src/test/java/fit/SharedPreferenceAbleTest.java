@@ -185,21 +185,18 @@ public class SharedPreferenceAbleTest {
         + "    public String aT;\n"
         + "}");
 
-      JavaFileObject source2 = JavaFileObjects.forSourceString("test.TestOne", ""
-          + "package test;\n"
-          + "import fit.SharedPreferenceAble;\n"
-          + "@SharedPreferenceAble public class TestOne extends Test {\n"
-          + "  public int thing;\n"
-          + "}"
-      );
+    JavaFileObject source2 = JavaFileObjects.forSourceString("test.TestOne", ""
+        + "package test;\n"
+        + "import fit.SharedPreferenceAble;\n"
+        + "@SharedPreferenceAble public class TestOne extends Test {\n"
+        + "  public int thing;\n"
+        + "}");
 
-      JavaFileObject source3 = JavaFileObjects.forSourceString("test.TestTwo", ""
-          + "package test;\n"
-          + "import fit.SharedPreferenceAble;\n"
-          + "@SharedPreferenceAble public class TestTwo extends Test {\n"
-          + "}"
-      );
-
+    JavaFileObject source3 = JavaFileObjects.forSourceString("test.TestTwo", ""
+        + "package test;\n"
+        + "import fit.SharedPreferenceAble;\n"
+        + "@SharedPreferenceAble public class TestTwo extends Test {\n"
+        + "}");
 
     JavaFileObject sharedSource1 = JavaFileObjects.forSourceString("test/Test_Preference", ""
         + "package test;\n"
@@ -275,14 +272,13 @@ public class SharedPreferenceAbleTest {
         + "  }\n"
         + "}");
 
-      assertAbout(javaSources()).that(asList(source1, source2, source3))
-          .withCompilerOptions("-Xlint:-processing")
-          .processedWith(new FitProcessor())
-          .compilesWithoutWarnings()
-          .and()
-          .generatesSources(sharedSource1,sharedSource2,sharedSource3);
+    assertAbout(javaSources()).that(asList(source1, source2, source3))
+        .withCompilerOptions("-Xlint:-processing")
+        .processedWith(new FitProcessor())
+        .compilesWithoutWarnings()
+        .and()
+        .generatesSources(sharedSource1, sharedSource2, sharedSource3);
   }
-
 
   @Test public void failsInNonParameterConstructor() {
     JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
@@ -298,145 +294,8 @@ public class SharedPreferenceAbleTest {
     assertAbout(javaSource()).that(source)
         .processedWith(new FitProcessor())
         .failsToCompile()
-        .withErrorContaining(
-            "Fit can't use no non-parameter constructor")
-        .in(source).onLine(3);
+        .withErrorContaining("Fit can't use no non-parameter constructor")
+        .in(source)
+        .onLine(3);
   }
-  //
-  //@Test public void failsIfInPrivateClass() {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.view.View;\n"
-  //      + "import butterknife.BindView;\n"
-  //      + "public class Test {\n"
-  //      + "  private static class Inner {\n"
-  //      + "    @BindView(1) View thing;\n"
-  //      + "  }\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource()).that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining(
-  //          "@BindView fields may not be contained in private classes. (test.Test.Inner.thing)")
-  //      .in(source).onLine(5);
-  //}
-  //
-  //@Test public void failsIfNotView() {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.app.Activity;\n"
-  //      + "import butterknife.BindView;\n"
-  //      + "public class Test extends Activity {\n"
-  //      + "  @BindView(1) String thing;\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource()).that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining(
-  //          "@BindView fields must extend from View or be an interface. (test.Test.thing)")
-  //      .in(source).onLine(5);
-  //}
-  //
-  //@Test public void failsIfInInterface() {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.view.View;\n"
-  //      + "import butterknife.BindView;\n"
-  //      + "public interface Test {\n"
-  //      + "    @BindView(1) View thing = null;\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource()).that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining(
-  //          "@BindView fields may only be contained in classes. (test.Test.thing)")
-  //      .in(source).onLine(4);
-  //}
-  //
-  //@Test public void failsIfPrivate() {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.app.Activity;\n"
-  //      + "import android.view.View;\n"
-  //      + "import butterknife.BindView;\n"
-  //      + "public class Test extends Activity {\n"
-  //      + "    @BindView(1) private View thing;\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource()).that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining("@BindView fields must not be private or static. (test.Test.thing)")
-  //      .in(source).onLine(6);
-  //}
-  //
-  //@Test public void failsIfStatic() {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.app.Activity;\n"
-  //      + "import android.view.View;\n"
-  //      + "import butterknife.BindView;\n"
-  //      + "public class Test extends Activity {\n"
-  //      + "    @BindView(1) static View thing;\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource()).that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining("@BindView fields must not be private or static. (test.Test.thing)")
-  //      .in(source).onLine(6);
-  //}
-  //
-  //@Test public void duplicateBindingFails() throws Exception {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.app.Activity;\n"
-  //      + "import android.view.View;\n"
-  //      + "import butterknife.BindView;\n"
-  //      + "public class Test extends Activity {\n"
-  //      + "    @BindView(1) View thing1;\n"
-  //      + "    @BindView(1) View thing2;\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource()).that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining(
-  //          "Attempt to use @BindView for an already bound ID 1 on 'thing1'. (test.Test.thing2)")
-  //      .in(source).onLine(7);
-  //}
-  //
-  //@Test public void failsOptionalRootViewBinding() throws Exception {
-  //  JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
-  //      + "package test;\n"
-  //      + "import android.content.Context;\n"
-  //      + "import android.view.View;\n"
-  //      + "import butterknife.OnClick;\n"
-  //      + "import butterknife.Optional;\n"
-  //      + "public class Test extends View {\n"
-  //      + "  @Optional @OnClick void doStuff() {}\n"
-  //      + "  public Test(Context context) {\n"
-  //      + "    super(context);\n"
-  //      + "  }\n"
-  //      + "}"
-  //  );
-  //
-  //  assertAbout(javaSource())
-  //      .that(source)
-  //      .processedWith(new ButterKnifeProcessor())
-  //      .failsToCompile()
-  //      .withErrorContaining(
-  //          "ID-free binding must not be annotated with @Optional. (test.Test.doStuff)")
-  //      .in(source)
-  //      .onLine(7);
-  //}
 }

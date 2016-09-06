@@ -7,6 +7,12 @@ import fit.SharedPreferenceAble;
  * @date 9/5/16
  */
 @SharedPreferenceAble public class FaithfulUser extends User {
- //private FaithfulUser(){}
- public long joinTime;
+  public FaithfulUser() {
+  }
+
+  public long joinTime;
+
+  class Inner {
+    public char cInner;
+  }
 }
