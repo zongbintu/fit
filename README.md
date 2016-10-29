@@ -30,11 +30,10 @@ allprojects {
 Add the following dependency to your `build.gradle` file:
 
 ```
-apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
     compile 'com.github.2tu.fit:fit:0.1.3'
-    apt 'com.github.2tu.fit:fit-compiler:0.1.3'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.1.3'
 }
 ```
 
