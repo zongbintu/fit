@@ -16,10 +16,6 @@ Fit 使用SharedPreferences存储对象中的基本数据类型。利用APT编�
 Add it in your root build.gradle at the end of repositories:
 
 ```
-dependencies {
-   classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-}
-
 allprojects {
 	repositories {
 		...
@@ -30,7 +26,6 @@ allprojects {
 Add the following dependency to your `build.gradle` file:
 
 ```
-
 dependencies {
     compile 'com.github.2tu.fit:fit:0.1.3'
     annotationProcessor 'com.github.2tu.fit:fit-compiler:0.1.3'
