@@ -186,6 +186,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       } else if (setOfHoverboards.equals(unboxFieldTypeName) || hashSetOfHoverboards.equals(
           unboxFieldTypeName)) {
         putMethod = "putStringSet";
+        result.addStatement("$T.$L($L, $S, " + valueL + ")", UTILS, putMethod, "editor",
+            element.getSimpleName(), element.getSimpleName());
+        continue;
       } else {
         continue;
       }
@@ -213,7 +216,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       }
     }
 
-    result.addStatement("editor.apply()");
+    result.addStatement("$T.apply($L)", UTILS, "editor");
 
     return result.build();
   }
@@ -267,9 +270,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           fieldTypeName)) {
         method = "getStringSet";
         defaultValue = null;
-        value = "($T) sharedPreferences.$L($S, $L)";
+        value = "($T) $T.getStringSet($L, $S, $L)";
         result.addStatement("obj.$N = " + value, element.getSimpleName(), hashSetOfHoverboards,
-            method, element.getSimpleName(), defaultValue);
+            UTILS, "sharedPreferences", element.getSimpleName(), defaultValue);
         continue;
       } else {
         continue;
@@ -286,8 +289,12 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         .addAnnotation(Override.class)
         .addModifiers(PUBLIC)
         .addParameter(CONTEXT, "context");
-    result.addStatement("$T.getSharedPreferenceEditor(context, $S).clear().apply()", UTILS,
-        targetType.toString());
+    result.addStatement(
+        "SharedPreferences.Editor editor = $T.getSharedPreferenceEditor(context, $S).clear()",
+        UTILS, targetType.toString());
+
+    result.addStatement("$T.apply($L)", UTILS, "editor");
+
     return result.build();
   }
 

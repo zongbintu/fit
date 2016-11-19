@@ -1,12 +1,15 @@
 package com.example.fit;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import com.example.fit.model.User;
 import fit.Fit;
 import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends Activity implements View.OnClickListener {
   TextView contentTextView;

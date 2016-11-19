@@ -1,5 +1,9 @@
 ## Changelog
 
+### Newest version: 0.1.4
+
+* miniSdkVersion 1
+
 ### Newest version: 0.1.3
 
 * add inner class check
