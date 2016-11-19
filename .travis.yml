@@ -7,7 +7,7 @@ android:
   components:
   - tools
   - platform-tools
-  - build-tools-24.0.1
+  - build-tools-24.0.2
   - android-24
 script:
   - chmod +x gradlew
@@ -16,3 +16,8 @@ script:
 # Disable Travis container-based infrastructure to correct
 # resource consumption in gradle presumably due to dexing.
 sudo: true
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle
