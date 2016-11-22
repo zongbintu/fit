@@ -2,13 +2,13 @@ language: android
 jdk: oraclejdk8
 env:
   global:
-    - ANDROID_TARGET=android-24
+    - ANDROID_TARGET=android-25
 android:
   components:
   - tools
   - platform-tools
-  - build-tools-24.0.2
-  - android-24
+  - build-tools-25.0.0
+  - android-25
 script:
   - chmod +x gradlew
   - ./gradlew clean build
