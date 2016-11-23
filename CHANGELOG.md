@@ -2,7 +2,7 @@
 
 ### Newest version: 0.1.4
 
-* miniSdkVersion 1
+* miniSdkVersion 4
 
 ### Newest version: 0.1.3
 

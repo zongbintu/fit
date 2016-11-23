@@ -34,7 +34,7 @@ public class SharedPreferenceAbleTest {
         + "  @Override public void save(Context context, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Test\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public Test get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.Test\", Context.MODE_PRIVATE);\n"
@@ -43,7 +43,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.Test\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Test\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
@@ -74,7 +75,7 @@ public class SharedPreferenceAbleTest {
         + "  @Override public void save(Context context, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Test\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public Test get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.Test\", Context.MODE_PRIVATE);\n"
@@ -83,7 +84,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.Test\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Test\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
@@ -114,7 +116,7 @@ public class SharedPreferenceAbleTest {
         + "  @Override public void save(Context context, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Example.Test\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public Test get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.Example.Test\", Context.MODE_PRIVATE);\n"
@@ -123,7 +125,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.Example.Test\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Example.Test\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
@@ -156,7 +159,7 @@ public class SharedPreferenceAbleTest {
         + "  @Override public void save(Context context, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Example.Test\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public Test get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.Example.Test\", Context.MODE_PRIVATE);\n"
@@ -165,7 +168,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.Example.Test\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Example.Test\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
@@ -209,7 +213,7 @@ public class SharedPreferenceAbleTest {
         + "  @Override public void save(Context context, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Test\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public Test get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.Test\", Context.MODE_PRIVATE);\n"
@@ -218,7 +222,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.Test\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.Test\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
@@ -234,7 +239,7 @@ public class SharedPreferenceAbleTest {
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.TestOne\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
         + "    editor.putInt(\"thing\", obj.thing);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public TestOne get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.TestOne\", Context.MODE_PRIVATE);\n"
@@ -244,7 +249,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.TestOne\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.TestOne\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
@@ -259,7 +265,7 @@ public class SharedPreferenceAbleTest {
         + "  @Override public void save(Context context, TestTwo obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.TestTwo\");\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    editor.apply();\n"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "  @Override public TestTwo get(Context context) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(\"test.TestTwo\", Context.MODE_PRIVATE);\n"
@@ -268,7 +274,8 @@ public class SharedPreferenceAbleTest {
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clear(Context context) {\n"
-        + "    Utils.getSharedPreferenceEditor(context, \"test.TestTwo\").clear().apply();\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, \"test.TestTwo\").clear();"
+        + "    Utils.apply(editor);\n"
         + "  }\n"
         + "}");
 
