@@ -8,7 +8,7 @@ Fit 使用SharedPreferences存储对象中的基本数据类型。利用APT编�
 * 基本类型
 * 基本包装类型
 * Set<String>
-* minSdkVersion 1
+* minSdkVersion 4
 
 
 
@@ -53,4 +53,4 @@ Fit.clear(this, User.class);
 ```
 
 ## What's new (0.1.4) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
-* miniSdkVersion 1
+* miniSdkVersion 4
