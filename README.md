@@ -27,8 +27,8 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.1.4'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.1.4'
+    compile 'com.github.2tu.fit:fit:0.2.0'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.2.0'
 }
 ```
 
