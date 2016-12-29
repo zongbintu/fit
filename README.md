@@ -52,5 +52,5 @@ clear
 Fit.clear(this, User.class);
 ```
 
-## What's new (0.1.4) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
-* miniSdkVersion 4
+## What's new (0.2.0) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
+* provide preferences file name
