@@ -1,6 +1,6 @@
 ## Changelog
 
-### Newest version: 0.2.0
+### Newest version: 0.2.1
 
 * provide preferences file name
 
