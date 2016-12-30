@@ -1,7 +1,6 @@
 package fit;
 
 import android.content.Context;
-import android.util.Log;
 
 /**
  * @auther Tu enum@foxmail.com
@@ -12,55 +11,41 @@ public final class Fit {
   private static boolean debug = true;
 
   public static void save(Context context, Object o) {
-    Class cls = o.getClass();
+    Class clazz = o.getClass();
+    instanceMM(clazz).save(context, o);
+  }
 
-    String clsName = cls.getName();
-    if (clsName.startsWith("android.") || clsName.startsWith("java.")) {
-      if (debug) Log.d(TAG, "MISS: Reached framework class. Abandoning search.");
-      return;
-    }
-    try {
-      Class<? extends MM> mmClass = findMMForClass(cls);
-      mmClass.newInstance().save(context, o);
-      if (debug) Log.d(TAG, "HIT: Loaded MM class and constructor.");
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Miss SharedPreferenceAble", e);
-    } catch (InstantiationException e) {
-      throw new RuntimeException(o.toString() + " can't instance ", e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(o.toString() + " can't instance ", e);
-    }
+  public static void save(Context context, String name, Object o) {
+    Class clazz = o.getClass();
+    instanceMM(clazz).save(context, name, o);
   }
 
   public static <T> T get(Context context, Class<T> clazz) {
-    try {
-      Class<? extends MM> mmClass = findMMForClass(clazz);
-      return (T) mmClass.newInstance().get(context);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Miss SharedPreferenceAble", e);
-    } catch (InstantiationException e) {
-      throw new RuntimeException(clazz.getName() + " can't instance ", e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(clazz.getName() + " can't instance ", e);
-    }
+    return (T) instanceMM(clazz).get(context);
+  }
+
+  public static <T> T get(Context context, String name, Class<T> clazz) {
+    return (T) instanceMM(clazz).get(context, name);
   }
 
   public static void clear(Context context, Class clazz) {
-    String clsName = clazz.getName();
-    if (clsName.startsWith("android.") || clsName.startsWith("java.")) {
-      if (debug) Log.d(TAG, "MISS: Reached framework class. Abandoning search.");
-      return;
-    }
+    instanceMM(clazz).clear(context);
+  }
+
+  public static void clear(Context context, String name, Class clazz) {
+    instanceMM(clazz).clear(context, name);
+  }
+
+  private static MM instanceMM(Class clazz) {
     try {
       Class<? extends MM> mmClass = findMMForClass(clazz);
-      mmClass.newInstance().clear(context);
-      if (debug) Log.d(TAG, "HIT: Loaded MM class and constructor.");
+      return mmClass.newInstance();
     } catch (ClassNotFoundException e) {
       throw new RuntimeException("Miss SharedPreferenceAble", e);
     } catch (InstantiationException e) {
-      throw new RuntimeException(clazz.toString() + " can't instance ", e);
+      throw new RuntimeException(clazz.getName() + " can't instance ", e);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(clazz.toString() + " can't instance ", e);
+      throw new RuntimeException(clazz.getName() + " can't instance ", e);
     }
   }
 
