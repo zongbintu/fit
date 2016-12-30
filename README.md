@@ -27,8 +27,8 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.2.0'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.2.0'
+    compile 'com.github.2tu.fit:fit:0.2.1'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.2.1'
 }
 ```
 
@@ -42,15 +42,18 @@ save
 ```java
 User user = new User("Three.Tu");
 Fit.save(this, user);
+Fit.save(this, "user", user);
 ```
 get
 ```java
 User user = Fit.get(this, User.class);
+User user = Fit.get(this, "user", User.class);
 ```
 clear
 ```java
 Fit.clear(this, User.class);
+Fit.clear(this, "user", User.class);
 ```
 
-## What's new (0.2.0) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
+## What's new (0.2.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
 * provide preferences file name
