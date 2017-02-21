@@ -1,5 +1,9 @@
 ## Changelog
 
+### Newest version: 0.3.0
+
+* 支持getter/setter
+
 ### Newest version: 0.2.1
 
 * provide preferences file name
