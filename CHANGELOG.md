@@ -1,5 +1,10 @@
 ## Changelog
 
+### Newest version: 0.3.1
+
+* save和clear返回Editor
+* 修复Double未校验空问题
+
 ### Newest version: 0.3.0
 
 * 支持getter/setter

@@ -27,8 +27,8 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.3.0'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.0'
+    compile 'com.github.2tu.fit:fit:0.3.1'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.1'
 }
 ```
 
@@ -55,5 +55,6 @@ Fit.clear(this, User.class);
 Fit.clear(this, "user", User.class);
 ```
 
-## What's new (0.3.0) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
-* 支持getter/setter
+## What's new (0.3.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
+* save和clear返回Editor
+* 修复Double未校验空问题

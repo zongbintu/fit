@@ -1,27 +1,34 @@
 package fit;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import fit.internal.Utils;
 
 /**
  * @auther Tu enum@foxmail.com
  * @date 16/8/27
  */
 public final class Fit {
-  private static final String TAG = Fit.class.getSimpleName();
-  private static boolean debug = true;
 
   public static void save(Context context, Object o) {
-    Class clazz = o.getClass();
-    instanceMM(clazz).save(context, o);
+    save(context, o.getClass().getName(), o);
   }
 
   public static void save(Context context, String name, Object o) {
+    Utils.apply(saveEditor(context, name, o));
+  }
+
+  public static SharedPreferences.Editor saveEditor(Context context, Object o) {
+    return saveEditor(context, o.getClass().getName(), o);
+  }
+
+  public static SharedPreferences.Editor saveEditor(Context context, String name, Object o) {
     Class clazz = o.getClass();
-    instanceMM(clazz).save(context, name, o);
+    return instanceMM(clazz).save(context, name, o);
   }
 
   public static <T> T get(Context context, Class<T> clazz) {
-    return (T) instanceMM(clazz).get(context);
+    return get(context, clazz.getName(), clazz);
   }
 
   public static <T> T get(Context context, String name, Class<T> clazz) {
@@ -29,11 +36,19 @@ public final class Fit {
   }
 
   public static void clear(Context context, Class clazz) {
-    instanceMM(clazz).clear(context);
+    clear(context, clazz.getName(), clazz);
   }
 
   public static void clear(Context context, String name, Class clazz) {
-    instanceMM(clazz).clear(context, name);
+    Utils.apply(clearEditor(context, name, clazz));
+  }
+
+  public static SharedPreferences.Editor clearEditor(Context context, Class clazz) {
+    return clearEditor(context, clazz.getName(), clazz);
+  }
+
+  public static SharedPreferences.Editor clearEditor(Context context, String name, Class clazz) {
+    return instanceMM(clazz).clear(context, name);
   }
 
   private static MM instanceMM(Class clazz) {
