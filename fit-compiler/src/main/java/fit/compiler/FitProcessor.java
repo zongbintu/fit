@@ -41,6 +41,8 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   private static final ClassName CONTEXT = ClassName.get("android.content", "Context");
   private static final ClassName SHARED_PREFERENCES =
       ClassName.get("android.content", "SharedPreferences");
+  private static final ClassName SHARED_PREFERENCES_EDITOR =
+      ClassName.get("android.content.SharedPreferences", "Editor");
   private static final ClassName UTILS = ClassName.get("fit.internal", "Utils");
   private static final ClassName STRING = ClassName.get("java.lang", "String");
 
@@ -267,20 +269,18 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     ParameterizedTypeName parameterizedTypeName = ParameterizedTypeName.get(MM, targetTypeName);
     result.addSuperinterface(parameterizedTypeName);
 
-    result.addMethod(createPreferenceSaveMethod(targetTypeName, fieldElements, getterElements))
-        .addMethod(createPreferenceSaveMethod(targetTypeName));
+    result.addMethod(createPreferenceSaveMethod(targetTypeName, fieldElements, getterElements));
 
-    result.addMethod(createPreferenceGetMethod(targetTypeName, fieldElements, setterElement))
-        .addMethod(createPreferenceGetMethod(targetTypeName));
+    result.addMethod(createPreferenceGetMethod(targetTypeName, fieldElements, setterElement));
 
-    result.addMethod(createPreferenceClearMethod())
-        .addMethod(createPreferenceClearMethod(targetTypeName));
+    result.addMethod(createPreferenceClearMethod());
     return result.build();
   }
 
   private MethodSpec createPreferenceSaveMethod(TypeName targetType, Set<Element> fieldElements,
       Set<Element> getterElements) {
     MethodSpec.Builder result = MethodSpec.methodBuilder("save")
+        .returns(SHARED_PREFERENCES_EDITOR)
         .addAnnotation(Override.class)
         .addModifiers(PUBLIC)
         .addParameter(CONTEXT, "context")
@@ -308,7 +308,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
               : valueL.substring(2, valueL.length() - 2));
     }
 
-    result = result.addStatement("$T.apply($L)", UTILS, "editor");
+    result = result.addStatement("return editor");
 
     return result.build();
   }
@@ -342,7 +342,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   private MethodSpec.Builder genSaveCode(MethodSpec.Builder builder, TypeName typeName,
       String putMethod, String valueL, String propertyName) {
     TypeName unboxFieldTypeName = unbox(typeName);
-    if (TypeName.DOUBLE.equals(unboxFieldTypeName)) {
+    if (TypeName.DOUBLE.equals(typeName)) {
       valueL = "Double.doubleToLongBits( obj." + valueL + ")";
       builder.addStatement("editor.$L($S, " + valueL + ")", putMethod, propertyName);
       return builder;
@@ -352,6 +352,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           propertyName);
       return builder;
     }
+
     if (typeName.isBoxedPrimitive()) {
       if (TypeName.DOUBLE.equals(unboxFieldTypeName)) {
         builder.addStatement(
@@ -372,16 +373,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       builder.addStatement("editor.$L($S, obj." + valueL + ")", putMethod, propertyName);
     }
     return builder;
-  }
-
-  private MethodSpec createPreferenceSaveMethod(TypeName targetType) {
-    MethodSpec.Builder result = MethodSpec.methodBuilder("save")
-        .addAnnotation(Override.class)
-        .addModifiers(PUBLIC)
-        .addParameter(CONTEXT, "context")
-        .addParameter(targetType, "obj")
-        .addStatement("save(context, $T.class.getName(), obj)", targetType);
-    return result.build();
   }
 
   private MethodSpec createPreferenceGetMethod(TypeName targetType, Set<Element> fieldElements,
@@ -467,19 +458,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         propertyName, defaultValue);
   }
 
-  private MethodSpec createPreferenceGetMethod(TypeName targetType) {
-    MethodSpec.Builder result = MethodSpec.methodBuilder("get")
-        .addAnnotation(Override.class)
-        .addModifiers(PUBLIC)
-        .addParameter(CONTEXT, "context");
-
-    result.addStatement("return get(context, $T.class.getName())", targetType).
-        returns(targetType);
-    return result.build();
-  }
-
   private MethodSpec createPreferenceClearMethod() {
     MethodSpec.Builder result = MethodSpec.methodBuilder("clear")
+        .returns(SHARED_PREFERENCES_EDITOR)
         .addAnnotation(Override.class)
         .addModifiers(PUBLIC)
         .addParameter(CONTEXT, "context")
@@ -488,17 +469,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         "SharedPreferences.Editor editor = $T.getSharedPreferenceEditor(context, name).clear()",
         UTILS);
 
-    result.addStatement("$T.apply($L)", UTILS, "editor");
-
-    return result.build();
-  }
-
-  private MethodSpec createPreferenceClearMethod(TypeName targetType) {
-    MethodSpec.Builder result = MethodSpec.methodBuilder("clear")
-        .addAnnotation(Override.class)
-        .addModifiers(PUBLIC)
-        .addParameter(CONTEXT, "context");
-    result.addStatement("clear(context, $T.class.getName())", targetType);
+    result.addStatement("return editor");
 
     return result.build();
   }
