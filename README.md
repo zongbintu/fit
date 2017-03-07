@@ -1,13 +1,13 @@
 # Fit
 
-[![Release](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit) [![Build Status](https://travis-ci.org/2tu/fit.svg?branch=master)](https://travis-ci.org/2tu/fit) [![Apache License](http://img.shields.io/hexpm/l/plug.svg?style=flat)](https://github.com/kentarosasaki/raspberrypi/blob/master/LICENSE)
+[![Release](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit)   
 
 Fit 使用SharedPreferences存储对象中的基本数据类型。利用APT编译时生成代码，与转成String及反射相比更快。
 
 ## support
 * 基本类型
 * 基本包装类型
-* Set<String>
+* Set&lt;String&gt;
 * minSdkVersion 4
 
 
@@ -27,8 +27,8 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.3.1'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.1'
+    compile 'com.github.2tu.fit:fit:0.3.2'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.2'
 }
 ```
 
@@ -38,23 +38,48 @@ annotation model class.
 @SharedPreferenceAble
 ```
 
-save
+save object
 ```java
-User user = new User("Three.Tu");
-Fit.save(this, user);
-Fit.save(this, "user", user);
+User user = new User();
+Fit.save(context, user);
+Fit.save(context, "user", user);
 ```
 get
 ```java
-User user = Fit.get(this, User.class);
-User user = Fit.get(this, "user", User.class);
+User user = Fit.get(context, User.class);
+User user = Fit.get(context, "user", User.class);
 ```
 clear
 ```java
-Fit.clear(this, User.class);
-Fit.clear(this, "user", User.class);
+Fit.clear(context, User.class);
+Fit.clear(context, "user");
 ```
+other
+```java
+Fit.get(context, "name").getBoolean("isFirst", false);
+SharedPreferences.Editor editor = Fit.edit(context, "name");
+editor.putBoolean("isFirst", true);
+editor.apply();
+```
+  
 
-## What's new (0.3.1) - [Changelog](https://github.com/2tu/fit/blob/master/CHANGELOG.md)
-* save和clear返回Editor
-* 修复Double未校验空问题
+License
+-------
+
+    Copyright 2016 Tu
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
+
+ [1]: http://2tu.github.com/fit/

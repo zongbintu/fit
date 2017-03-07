@@ -12,4 +12,5 @@ android {
 }
 dependencies {
   compile project(':fit-annotations')
+  compile deps.supportAnnotations
 }

@@ -12,6 +12,4 @@ public interface MM<T> {
   SharedPreferences.Editor save(Context context, String name, T obj);
 
   T get(Context context, String name);
-
-  SharedPreferences.Editor clear(Context context, String name);
 }

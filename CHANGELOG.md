@@ -1,5 +1,9 @@
 ## Changelog
 
+### Newest version: 0.3.2
+
+* 为Fit添加get、edit方法
+
 ### Newest version: 0.3.1
 
 * save和clear返回Editor
