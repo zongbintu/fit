@@ -11,9 +11,12 @@ import java.util.Set;
 @SuppressWarnings({ "deprecation", "WeakerAccess" }) // Used by generated code.
 public final class Utils {
 
+  public static SharedPreferences getSharedPreference(Context context, String name) {
+    return context.getSharedPreferences(name, Context.MODE_PRIVATE);
+  }
+
   public static SharedPreferences.Editor getSharedPreferenceEditor(Context context, String name) {
-    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
-    return sharedPreferences.edit();
+    return getSharedPreference(context, name).edit();
   }
 
   public static void apply(SharedPreferences.Editor editor) {
