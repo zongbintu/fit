@@ -273,7 +273,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
     result.addMethod(createPreferenceGetMethod(targetTypeName, fieldElements, setterElement));
 
-    result.addMethod(createPreferenceClearMethod());
     return result.build();
   }
 
@@ -456,22 +455,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     }
     return builder.addStatement(assignment + " = " + value, propertyName, cast, method,
         propertyName, defaultValue);
-  }
-
-  private MethodSpec createPreferenceClearMethod() {
-    MethodSpec.Builder result = MethodSpec.methodBuilder("clear")
-        .returns(SHARED_PREFERENCES_EDITOR)
-        .addAnnotation(Override.class)
-        .addModifiers(PUBLIC)
-        .addParameter(CONTEXT, "context")
-        .addParameter(STRING, "name");
-    result.addStatement(
-        "SharedPreferences.Editor editor = $T.getSharedPreferenceEditor(context, name).clear()",
-        UTILS);
-
-    result.addStatement("return editor");
-
-    return result.build();
   }
 
   private TypeName unbox(TypeName typeName) {

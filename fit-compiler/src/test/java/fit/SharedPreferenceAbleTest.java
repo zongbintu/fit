@@ -44,10 +44,6 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();\n"
-        + "    return editor;\n"
-        + "  }\n"
         + "}");
 
     assertAbout(javaSource()).that(source)
@@ -87,10 +83,6 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();"
-        + "    return editor;\n"
-        + "  }\n"
         + "}");
 
     assertAbout(javaSource()).that(source)
@@ -129,10 +121,6 @@ public class SharedPreferenceAbleTest {
         + "    Test obj = new Test();\n"
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
-        + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();"
-        + "    return editor;\n"
         + "  }\n"
         + "}");
 
@@ -174,10 +162,6 @@ public class SharedPreferenceAbleTest {
         + "    Test obj = new Test();\n"
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
-        + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();\n"
-        + "    return editor;\n"
         + "  }\n"
         + "}");
 
@@ -231,10 +215,6 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();\n"
-        + "    return editor;\n"
-        + "  }\n"
         + "}");
 
     JavaFileObject sharedSource2 = JavaFileObjects.forSourceString("test/TestOne_Preference", ""
@@ -260,10 +240,6 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();\n"
-        + "    return editor;\n"
-        + "  }\n"
         + "}");
 
     JavaFileObject sharedSource3 = JavaFileObjects.forSourceString("test/TestTwo_Preference", ""
@@ -286,10 +262,6 @@ public class SharedPreferenceAbleTest {
         + "    TestTwo obj = new TestTwo();\n"
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
-        + "  }\n"
-        + "  @Override public Editor clear(Context context, String name) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name).clear();"
-        + "    return editor;\n"
         + "  }\n"
         + "}");
 
