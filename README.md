@@ -21,6 +21,8 @@ Add the following dependency to your `build.gradle` file:
 dependencies {
     compile 'com.github.2tu.fit:fit:0.3.2'
     annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.2'
+    //use apt
+    //apt 'com.github.2tu.fit:fit-compiler:0.3.2'
 }
 ```
 
@@ -54,6 +56,8 @@ editor.putBoolean("isFirst", true);
 editor.apply();
 ```
   
+##  Q&A
+[apt or annotationProcessor](https://github.com/2tu/fit/wiki/apt-or-annotationProcessor)
 
 License
 -------
