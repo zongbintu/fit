@@ -181,13 +181,6 @@ public class SharedPreferenceAbleTest {
         + "    public String aT;\n"
         + "}");
 
-    JavaFileObject source2 = JavaFileObjects.forSourceString("test.TestOne", ""
-        + "package test;\n"
-        + "import fit.SharedPreferenceAble;\n"
-        + "@SharedPreferenceAble public class TestOne extends Test {\n"
-        + "  public int thing;\n"
-        + "}");
-
     JavaFileObject source3 = JavaFileObjects.forSourceString("test.TestTwo", ""
         + "package test;\n"
         + "import fit.SharedPreferenceAble;\n"
@@ -217,31 +210,6 @@ public class SharedPreferenceAbleTest {
         + "  }\n"
         + "}");
 
-    JavaFileObject sharedSource2 = JavaFileObjects.forSourceString("test/TestOne_Preference", ""
-        + "package test;\n"
-        + "import android.content.Context;\n"
-        + "import android.content.SharedPreferences;\n"
-        + "import android.content.SharedPreferences.Editor;\n"
-        + "import fit.MM;\n"
-        + "import fit.internal.Utils;\n"
-        + "import java.lang.Override;\n"
-        + "import java.lang.String;\n"
-        + "public class TestOne_Preference implements MM<TestOne> {\n"
-        + "  @Override public Editor save(Context context, String name, TestOne obj) {\n"
-        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
-        + "    editor.putInt(\"thing\", obj.thing);\n"
-        + "    editor.putString(\"aT\", obj.aT);\n"
-        + "    return editor;\n"
-        + "  }\n"
-        + "  @Override public TestOne get(Context context, String name) {\n"
-        + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
-        + "    TestOne obj = new TestOne();\n"
-        + "    obj.thing = sharedPreferences.getInt(\"thing\", 0);\n"
-        + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
-        + "    return obj;\n"
-        + "  }\n"
-        + "}");
-
     JavaFileObject sharedSource3 = JavaFileObjects.forSourceString("test/TestTwo_Preference", ""
         + "package test;\n"
         + "import android.content.Context;\n"
@@ -265,12 +233,12 @@ public class SharedPreferenceAbleTest {
         + "  }\n"
         + "}");
 
-    assertAbout(javaSources()).that(asList(source1, source2, source3))
+    assertAbout(javaSources()).that(asList(source1, source3))
         .withCompilerOptions("-Xlint:-processing")
         .processedWith(new FitProcessor())
         .compilesWithoutWarnings()
         .and()
-        .generatesSources(sharedSource1, sharedSource2, sharedSource3);
+        .generatesSources(sharedSource1, sharedSource3);
   }
 
   @Test public void failsInNonParameterConstructor() {
