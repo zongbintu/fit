@@ -291,4 +291,49 @@ public class SharedPreferenceAbleTest {
         .in(source)
         .onLine(3);
   }
+
+  @Test public void sharedPreferenceAbleViewPrivate() {
+    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
+        + "package test;\n"
+        + "import fit.SharedPreferenceAble;\n"
+        + "@SharedPreferenceAble public final class Test {\n"
+        + "    private String aT;\n"
+        + "    public String getAT(){\n"
+        + "        return aT;\n"
+        + "     }\n"
+        + "    public void setAT(String aT){\n"
+        + "        this.aT = aT;\n"
+        + "     }\n"
+        + "}");
+
+    JavaFileObject sharedSource = JavaFileObjects.forSourceString("test/Test_Preference", ""
+        + "package test;\n"
+        + "import android.content.Context;\n"
+        + "import android.content.SharedPreferences;\n"
+        + "import android.content.SharedPreferences.Editor;\n"
+        + "import fit.MM;\n"
+        + "import fit.internal.Utils;\n"
+        + "import java.lang.Override;\n"
+        + "import java.lang.String;\n"
+        + "public final class Test_Preference implements MM<Test> {\n"
+        + "  @Override public Editor save(Context context, String name, Test obj) {\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
+        + "    editor.putString(\"AT\", obj.getAT());\n"
+        + "    return editor;\n"
+        + "  }\n"
+        + "  @Override public Test get(Context context, String name) {\n"
+        + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
+        + "    Test obj = new Test();\n"
+        + "    obj.setAT(sharedPreferences.getString(\"AT\", null));\n"
+        + "    return obj;\n"
+        + "  }\n"
+        + "}");
+
+    assertAbout(javaSource()).that(source)
+        .withCompilerOptions("-Xlint:-processing")
+        .processedWith(new FitProcessor())
+        .compilesWithoutWarnings()
+        .and()
+        .generatesSources(sharedSource);
+  }
 }
