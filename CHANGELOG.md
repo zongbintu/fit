@@ -1,5 +1,10 @@
 ## Changelog
 
+### Version 0.3.3(2017-06-05)
+
+* Fix:compileOnly auto-service.
+* Removed Deprecated method from Fit.
+
 ### Version 0.3.2(2017-03-07)
 
 * New:method get and edit.
