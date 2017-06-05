@@ -6,13 +6,13 @@ targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
 dependencies {
   compile project(':fit-annotations')
-  compile deps.autoservice
+  compile deps.autocommon
   compile deps.javapoet
+  compileOnly deps.autoservice
 
   testCompile deps.android
   testCompile deps.junit
   testCompile deps.compiletesting
-  testCompile deps.autocommon
   testCompile deps.truth
   testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
