@@ -72,32 +72,4 @@ public final class Fit {
   public static SharedPreferences.Editor clearEditor(@NonNull Context context, String name) {
     return Utils.getSharedPreferenceEditor(context, name).clear();
   }
-
-  /**
-   * remove all values from the preferences for {@code name}.
-   *
-   * @deprecated use {@link #clear(Context, Class)} or {@link #clear(Context, String)}.
-   */
-  @Deprecated public static void clear(@NonNull Context context, String name, Class clazz) {
-    Utils.apply(clearEditor(context, name));
-  }
-
-  /**
-   * Mark in the {@link SharedPreferences.Editor} to remove all values from the {@code name}
-   * preferences.
-   *
-   * @deprecated use {@link #clearEditor(Context, Class)} or {@link #clearEditor(Context, String)}.
-   */
-  @Deprecated public static SharedPreferences.Editor clearEditor(@NonNull Context context,
-      String name, Class clazz) {
-    return clearEditor(context, name);
-  }
-
-  public static SharedPreferences get(@NonNull Context context, String name) {
-    return Utils.getSharedPreference(context, name);
-  }
-
-  public static SharedPreferences.Editor edit(@NonNull Context context, String name) {
-    return Utils.getSharedPreferenceEditor(context, name);
-  }
 }

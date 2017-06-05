@@ -2,15 +2,7 @@
 
 [![Release](https://jitpack.io/v/2tu/fit.svg)](https://jitpack.io/#2tu/fit)   
 
-Fit 使用SharedPreferences存储对象中的基本数据类型。利用APT编译时生成代码，与转成String及反射相比更快。
-
-## support
-* 基本类型
-* 基本包装类型
-* Set&lt;String&gt;
-* minSdkVersion 4
-
-
+Fit storage bean for SharedPreferences which uses annotation processing to generate boilerplate code for you.
 
 ## Installation
 Add it in your root build.gradle at the end of repositories:
@@ -27,8 +19,10 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.3.2'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.2'
+    compile 'com.github.2tu.fit:fit:0.3.3'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.3'
+    //use apt
+    //apt 'com.github.2tu.fit:fit-compiler:0.3.3'
 }
 ```
 
@@ -62,6 +56,8 @@ editor.putBoolean("isFirst", true);
 editor.apply();
 ```
   
+##  Q&A
+[apt or annotationProcessor](https://github.com/2tu/fit/wiki/apt-or-annotationProcessor)
 
 License
 -------

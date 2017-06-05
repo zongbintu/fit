@@ -407,7 +407,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     String method = "";
     String defaultValue = "0";
     String cast = "";
-    String value = "$L sharedPreferences.$L($S,$L)";
+    String value = "$L sharedPreferences.$L($S, $L)";
     if (TypeName.get(String.class).equals(fieldTypeName)) {
       method = METHOD_GET_STRING;
       defaultValue = null;
@@ -420,15 +420,15 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       method = METHOD_GET_Int;
     } else if (TypeName.BYTE.equals(fieldTypeName)) {
       method = METHOD_GET_Int;
-      value = "($L) sharedPreferences.$L($S,$L)";
+      value = "($L) sharedPreferences.$L($S, $L)";
       cast = "byte";
     } else if (TypeName.SHORT.equals(fieldTypeName)) {
       method = METHOD_GET_Int;
-      value = "($L) sharedPreferences.$L($S,$L)";
+      value = "($L) sharedPreferences.$L($S, $L)";
       cast = "short";
     } else if (TypeName.CHAR.equals(fieldTypeName)) {
       method = METHOD_GET_Int;
-      value = "($L) sharedPreferences.$L($S,$L)";
+      value = "($L) sharedPreferences.$L($S, $L)";
       cast = "char";
     } else if (TypeName.LONG.equals(fieldTypeName)) {
       method = "getLong";
