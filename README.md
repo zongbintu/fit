@@ -19,10 +19,10 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:0.3.3'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.3'
+    compile 'com.github.2tu.fit:fit:0.3.4'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:0.3.4'
     //use apt
-    //apt 'com.github.2tu.fit:fit-compiler:0.3.3'
+    //apt 'com.github.2tu.fit:fit-compiler:0.3.4'
 }
 ```
 
