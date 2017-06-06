@@ -1,6 +1,6 @@
 ## Changelog
 
-### Version 0.3.3(2017-06-05)
+### Version 0.3.4(2017-06-06)
 
 * Fix:compileOnly auto-service.
 * Removed Deprecated method from Fit.
