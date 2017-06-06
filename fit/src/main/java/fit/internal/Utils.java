@@ -5,8 +5,7 @@ import android.content.SharedPreferences;
 import java.util.Set;
 
 /**
- * @auther Tu enum@foxmail.com
- * @date 9/1/16
+ * Created by tu on  9/1/16.
  */
 @SuppressWarnings({ "deprecation", "WeakerAccess" }) // Used by generated code.
 public final class Utils {
