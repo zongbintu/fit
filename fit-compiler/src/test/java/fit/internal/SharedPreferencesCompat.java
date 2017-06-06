@@ -21,10 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-/**
- * @auther tu enum@foxmail.com.
- */
-
 public class SharedPreferencesCompat {
   private static final Method sApplyMethod = findApplyMethod();
 

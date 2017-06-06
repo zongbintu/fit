@@ -6,8 +6,7 @@ import android.support.annotation.NonNull;
 import fit.internal.Utils;
 
 /**
- * @auther Tu enum@foxmail.com
- * @date 16/8/27
+ * Created by tu on 16/8/27.
  */
 public final class Fit {
 
