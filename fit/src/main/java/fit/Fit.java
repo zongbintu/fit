@@ -10,6 +10,8 @@ import fit.internal.Utils;
  */
 public final class Fit {
 
+  public static final String TAG = "Fit";
+
   private static MM instanceMM(Class clazz) {
     try {
       Class<? extends MM> mmClass = findMMForClass(clazz);

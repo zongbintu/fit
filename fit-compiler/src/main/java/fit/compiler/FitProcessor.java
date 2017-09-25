@@ -44,6 +44,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   private static final ClassName SHARED_PREFERENCES_EDITOR =
       ClassName.get("android.content.SharedPreferences", "Editor");
   private static final ClassName UTILS = ClassName.get("fit.internal", "Utils");
+  private static final ClassName FILE_OBJECT_UTIL = ClassName.get("fit.internal", "FileObjectUtil");
   private static final ClassName STRING = ClassName.get("java.lang", "String");
 
   //Set<String>
@@ -118,7 +119,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           if (modifiers.contains(Modifier.STATIC)) {
             continue;
           }
-          if (kind == ElementKind.FIELD) {
+          if (kind == ElementKind.FIELD && !modifiers.contains(Modifier.TRANSIENT)) {
             if (modifiers.contains(Modifier.PRIVATE)) {
               privateFieldElements.add(memberElement);
             } else {
@@ -368,8 +369,13 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         builder.addStatement("editor.$L($S, $T.checkNonNull(obj.$L) ? obj.$L : false)", putMethod,
             propertyName, UTILS, propertyName, propertyName);
       }
-    } else if (TypeName.get(String.class).equals(unboxFieldTypeName) || typeName.isPrimitive()) {
-      builder.addStatement("editor.$L($S, obj." + valueL + ")", putMethod, propertyName);
+    } else {
+      if (TypeName.get(String.class).equals(unboxFieldTypeName) || typeName.isPrimitive()) {
+        builder.addStatement("editor.$L($S, obj." + valueL + ")", putMethod, propertyName);
+      } else {
+        builder.addStatement("$T.writeObject(context, name + $S, obj.$L)", FILE_OBJECT_UTIL,
+            "." + propertyName, valueL);
+      }
     }
     return builder;
   }
@@ -404,7 +410,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   private MethodSpec.Builder genGetCode(boolean isSetter, MethodSpec.Builder builder,
       TypeMirror typeMirror, String propertyName, String assignment) {
     TypeName fieldTypeName = unbox(TypeName.get(typeMirror));
-    String method = "";
+    String method;
     String defaultValue = "0";
     String cast = "";
     String value = "$L sharedPreferences.$L($S, $L)";
@@ -437,7 +443,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       value = "$L Double.longBitsToDouble(sharedPreferences.$L($S, $L))";
     } else if (setOfHoverboards.equals(fieldTypeName) || hashSetOfHoverboards.equals(
         fieldTypeName)) {
-      method = "getStringSet";
       defaultValue = null;
       value = "($T) $T.getStringSet($L, $S, $L)";
       if (isSetter) {
@@ -447,6 +452,13 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       return builder.addStatement(assignment + " = " + value, propertyName, hashSetOfHoverboards,
           UTILS, "sharedPreferences", propertyName, defaultValue);
     } else {
+      if (isSetter) {
+        builder.addStatement(assignment + "($T) $T.readObject(context, name + $S))", fieldTypeName,
+            FILE_OBJECT_UTIL, "." + propertyName);
+      } else {
+        builder.addStatement(assignment + " = ($T) $T.readObject(context, name + $S)", propertyName,
+            fieldTypeName, FILE_OBJECT_UTIL, "." + propertyName);
+      }
       return builder;
     }
     if (isSetter) {

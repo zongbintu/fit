@@ -2,12 +2,14 @@ package fit.internal;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Set;
 
 /**
- * Created by tu on 9/1/16.
+ * Created by tu on  9/1/16.
  */
-@SuppressWarnings({ "deprecation", "WeakerAccess" }) // Used by generated code.
+// Used by generated code.
 public final class Utils {
 
   public static SharedPreferences getSharedPreference(Context context, String name) {
@@ -34,5 +36,15 @@ public final class Utils {
   public static Set<String> getStringSet(SharedPreferences sharedPreferences, String key,
       Set<String> defaultValue) {
     return SharedPreferencesCompat.getStringSet(sharedPreferences, key, defaultValue);
+  }
+
+  public static void closeQuietly(Closeable closeable) {
+    try {
+      if (closeable != null) {
+        closeable.close();
+      }
+    } catch (IOException ioe) {
+      // ignore
+    }
   }
 }

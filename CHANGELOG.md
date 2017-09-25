@@ -1,5 +1,9 @@
 ## Changelog
 
+### Version 1.0.0(2017-09-25)
+
+* New:save Enum,Array,Serializable.
+
 ### Version 0.3.4(2017-06-06)
 
 * Fix:compileOnly auto-service.
