@@ -304,4 +304,95 @@ public class SharedPreferenceAbleTest {
         .and()
         .generatesSources(sharedSource);
   }
+
+  @Test public void sharedPreferenceAbleFileObject() {
+    JavaFileObject source = JavaFileObjects.forSourceString("test.Test", ""
+        + "package test;\n"
+        + "import fit.SharedPreferenceAble;\n"
+        + "import java.util.List;\n"
+        + "@SharedPreferenceAble public final class Test {\n"
+        + "    private List<String> aT;\n"
+        + "    public List<String> getAT(){\n"
+        + "        return aT;\n"
+        + "     }\n"
+        + "    public void setAT(List<String> aT){\n"
+        + "        this.aT = aT;\n"
+        + "     }\n"
+        + "}");
+
+    JavaFileObject sharedSource = JavaFileObjects.forSourceString("test/Test_Preference", ""
+        + "package test;\n"
+        + "import android.content.Context;\n"
+        + "import android.content.SharedPreferences;\n"
+        + "import android.content.SharedPreferences.Editor;\n"
+        + "import fit.MM;\n"
+        + "import fit.internal.FileObjectUtil;\n"
+        + "import fit.internal.Utils;\n"
+        + "import java.lang.Override;\n"
+        + "import java.lang.String;\n"
+        + "import java.util.List;\n"
+        + "public final class Test_Preference implements MM<Test> {\n"
+        + "  @Override public Editor save(Context context, String name, Test obj) {\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
+        + "    FileObjectUtil.writeObject(context, name + \".AT\", obj.getAT())\n"
+        + "    return editor;\n"
+        + "  }\n"
+        + "  @Override public Test get(Context context, String name) {\n"
+        + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
+        + "    Test obj = new Test();\n"
+        + "    obj.setAT((List<String>) FileObjectUtil.readObject(context, name + \".AT\"));\n"
+        + "    return obj;\n"
+        + "  }\n"
+        + "}");
+
+    assertAbout(javaSource()).that(source)
+        .withCompilerOptions("-Xlint:-processing")
+        .processedWith(new FitProcessor())
+        .compilesWithoutWarnings()
+        .and()
+        .generatesSources(sharedSource);
+  }
+
+  @Test public void sharedPreferenceAbleFileField() {
+    JavaFileObject source1 = JavaFileObjects.forSourceString("test.Test",
+        "" + "package test;\n" + "public class Test {\n" + "    public String aT;\n" + "}");
+
+    JavaFileObject source2 = JavaFileObjects.forSourceString("test.TestTwo", ""
+        + "package test;\n"
+        + "import fit.SharedPreferenceAble;\n"
+        + "@SharedPreferenceAble public class TestTwo{\n"
+        + "    public Test aT;\n"
+        + "}");
+
+    JavaFileObject sharedSource2 = JavaFileObjects.forSourceString("test/TestTwo_Preference", ""
+        + "package test;\n"
+        + "import android.content.Context;\n"
+        + "import android.content.SharedPreferences;\n"
+        + "import android.content.SharedPreferences.Editor;\n"
+        + "import fit.MM;\n"
+        + "import fit.internal.FileObjectUtil;\n"
+        + "import fit.internal.Utils;\n"
+        + "import java.lang.Override;\n"
+        + "import java.lang.String;\n"
+        + "public class TestTwo_Preference implements MM<TestTwo> {\n"
+        + "  @Override public Editor save(Context context, String name, TestTwo obj) {\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
+        + "    FileObjectUtil.writeObject(context, name + \".aT\", obj.aT)\n"
+        + "    return editor;\n"
+        + "  }\n"
+        + "  @Override public TestTwo get(Context context, String name) {\n"
+        + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
+        + "    TestTwo obj = new TestTwo();\n"
+        + "    obj.aT = (Test) FileObjectUtil.readObject(context, name + \".aT\");\n"
+        + "    return obj;\n"
+        + "  }\n"
+        + "}");
+
+    assertAbout(javaSources()).that(asList(source1, source2))
+        .withCompilerOptions("-Xlint:-processing")
+        .processedWith(new FitProcessor())
+        .compilesWithoutWarnings()
+        .and()
+        .generatesSources(sharedSource2);
+  }
 }

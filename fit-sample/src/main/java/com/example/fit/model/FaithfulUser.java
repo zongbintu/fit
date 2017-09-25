@@ -18,7 +18,6 @@ import fit.SharedPreferenceAble;
 
   private String n;
   private boolean smaller;
-  private Integer age;
   private int _role;
 
   String b;
@@ -53,14 +52,6 @@ import fit.SharedPreferenceAble;
 
   public void setSmaller(boolean smaller) {
     this.smaller = smaller;
-  }
-
-  public Integer getAge() {
-    return age;
-  }
-
-  public void setAge(Integer age) {
-    this.age = age;
   }
 
   public int get_role() {
