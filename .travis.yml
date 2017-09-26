@@ -12,7 +12,7 @@ android:
   - extra-android-m2repository
 script:
   - chmod +x gradlew
-  - ./gradlew clean build
+  - ./gradlew clean build --debug
 
 # Disable Travis container-based infrastructure to correct
 # resource consumption in gradle presumably due to dexing.
