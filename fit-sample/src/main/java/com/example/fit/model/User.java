@@ -1,6 +1,7 @@
 package com.example.fit.model;
 
 import fit.SharedPreferenceAble;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import java.util.List;
 
   public List<Hobby> hobbies;
   private Job job;
+  private Date birthDay;
 
   private transient Job transientJob;
 
@@ -212,6 +214,14 @@ import java.util.List;
     this.job = job;
   }
 
+  public Date getBirthDay() {
+    return birthDay;
+  }
+
+  public void setBirthDay(Date birthDay) {
+    this.birthDay = birthDay;
+  }
+
   @Override public String toString() {
     return "User{"
         + "name='"
@@ -255,6 +265,8 @@ import java.util.List;
         + hobbies
         + ", job="
         + job
+        + ", birthDay="
+        + birthDay
         + ", transientJob="
         + transientJob
         + '}';
