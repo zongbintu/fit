@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * @author Tu enum@foxmail.com.
@@ -23,6 +24,9 @@ public final class FileObjectUtil {
    * @param obj Type is String/Array/Serializable
    */
   public static void writeObject(Context context, String fileName, Object obj) {
+    if(!(obj instanceof Serializable)){
+      return;
+    }
     FileOutputStream fileOutputStream = null;
     ObjectOutputStream objectOutputStream = null;
     try {
@@ -64,5 +68,17 @@ public final class FileObjectUtil {
       return clazz.cast(obj);
     }
     return null;
+  }
+
+  /**
+   * Delete the given private file associated with this Context's application package.
+   *
+   * @param context {@link Context}
+   * @param name The name of the file to delete; can not contain path separators.
+   * @return true if the file was successfully deleted; else false.
+   * @since 1.0.1
+   */
+  public static boolean deleteFile(Context context, String name) {
+    return context.deleteFile(name);
   }
 }

@@ -9,9 +9,12 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import fit.SharedPreferenceAble;
+import java.beans.PropertyDescriptor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,11 +51,11 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   private static final ClassName STRING = ClassName.get("java.lang", "String");
 
   //Set<String>
-  TypeName hoverboard = TypeName.get(String.class);
+  TypeName stringTypeName = TypeName.get(String.class);
   ClassName set = ClassName.get("java.util", "Set");
   ClassName hashSet = ClassName.get("java.util", "HashSet");
-  TypeName setOfHoverboards = ParameterizedTypeName.get(set, hoverboard);
-  TypeName hashSetOfHoverboards = ParameterizedTypeName.get(hashSet, hoverboard);
+  TypeName setOfHoverboards = ParameterizedTypeName.get(set, stringTypeName);
+  TypeName hashSetOfHoverboards = ParameterizedTypeName.get(hashSet, stringTypeName);
 
   private static final String METHOD_GET_STRING = "getString";
   private static final String METHOD_GET_Int = "getInt";
@@ -97,7 +100,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
       if (targetType instanceof ParameterizedTypeName) {
         targetType = ((ParameterizedTypeName) targetType).rawType;
       }
-
       String packageName = getPackageName(enclosingElement);
 
       try {
@@ -119,7 +121,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           if (modifiers.contains(Modifier.STATIC)) {
             continue;
           }
+
           if (kind == ElementKind.FIELD && !modifiers.contains(Modifier.TRANSIENT)) {
+
             if (modifiers.contains(Modifier.PRIVATE)) {
               privateFieldElements.add(memberElement);
             } else {
@@ -165,6 +169,9 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           throw new RuntimeException("Fit can't use no non-parameter constructor");
         }
 
+        Set<fit.compiler.PropertyDescriptor> getterPropertyDescriptors = new HashSet<>();
+        Set<fit.compiler.PropertyDescriptor> setterPropertyDescriptors = new HashSet<>();
+
         //过滤getter
         Set<Element> getterElements = new HashSet<>();
         for (Element method : suspectedGetterElements) {
@@ -175,6 +182,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           for (Element field : privateFieldElements) {
             if (field.getSimpleName().toString().equalsIgnoreCase(propertyName)) {
               getterElements.add(method);
+              fit.compiler.PropertyDescriptor propertyDescriptor = new fit.compiler.PropertyDescriptor();
+              propertyDescriptor.setField(field);
+              propertyDescriptor.setGetter(method);
+              getterPropertyDescriptors.add(propertyDescriptor);
               break;
             }
           }
@@ -188,6 +199,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           for (Element field : privateFieldElements) {
             if (field.getSimpleName().toString().equalsIgnoreCase(propertyName)) {
               setterElements.add(method);
+              fit.compiler.PropertyDescriptor propertyDescriptor = new fit.compiler.PropertyDescriptor();
+              propertyDescriptor.setField(field);
+              propertyDescriptor.setSetter(method);
+              setterPropertyDescriptors.add(propertyDescriptor);
               break;
             }
           }
@@ -195,7 +210,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
         JavaFile javaFile = JavaFile.builder(preferenceClassName.packageName(),
             createPreferenceClass(preferenceClassName, isFinal, targetType, fieldElements,
-                getterElements, setterElements))
+                getterPropertyDescriptors, setterPropertyDescriptors))
             .addFileComment("Generated code from Fit. Do not modify!")
             .build();
         javaFile.writeTo(filer);
@@ -258,8 +273,8 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   }
 
   private TypeSpec createPreferenceClass(ClassName preferenceClassName, boolean isFinal,
-      TypeName targetTypeName, Set<Element> fieldElements, Set<Element> getterElements,
-      Set<Element> setterElement) {
+      TypeName targetTypeName, Set<Element> fieldElements, Set<fit.compiler.PropertyDescriptor> getterPropertyDescriptors,
+      Set<fit.compiler.PropertyDescriptor> setterPropertyDescriptors) {
     TypeSpec.Builder result =
         TypeSpec.classBuilder(preferenceClassName.simpleName()).addModifiers(PUBLIC);
 
@@ -270,15 +285,17 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     ParameterizedTypeName parameterizedTypeName = ParameterizedTypeName.get(MM, targetTypeName);
     result.addSuperinterface(parameterizedTypeName);
 
-    result.addMethod(createPreferenceSaveMethod(targetTypeName, fieldElements, getterElements));
+    result.addMethod(createPreferenceSaveMethod(targetTypeName, fieldElements, getterPropertyDescriptors));
 
-    result.addMethod(createPreferenceGetMethod(targetTypeName, fieldElements, setterElement));
+    result.addMethod(createPreferenceGetMethod(targetTypeName, fieldElements, setterPropertyDescriptors));
+
+    result.addMethod(createPreferenceClearFieldsMethod(fieldElements, getterPropertyDescriptors));
 
     return result.build();
   }
 
   private MethodSpec createPreferenceSaveMethod(TypeName targetType, Set<Element> fieldElements,
-      Set<Element> getterElements) {
+      Set<fit.compiler.PropertyDescriptor> getterPropertyDescriptors) {
     MethodSpec.Builder result = MethodSpec.methodBuilder("save")
         .returns(SHARED_PREFERENCES_EDITOR)
         .addAnnotation(Override.class)
@@ -297,15 +314,15 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     }
 
     //getter
-    for (Element method : getterElements) {
+    for (fit.compiler.PropertyDescriptor propertyDescriptor : getterPropertyDescriptors) {
+      Element method = propertyDescriptor.getGetter();
       TypeMirror typeMirror = ((ExecutableType) method.asType()).getReturnType();
       TypeName typeName = TypeName.get(typeMirror);
       String putMethod = genPutMethod(typeName);
       String valueL = method.toString();
 
       result = genSaveCode(result, typeName, putMethod, valueL,
-          valueL.startsWith("get") ? valueL.substring(3, valueL.length() - 2)
-              : valueL.substring(2, valueL.length() - 2));
+          propertyDescriptor.getField().getSimpleName().toString());
     }
 
     result = result.addStatement("return editor");
@@ -317,7 +334,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     TypeName unboxFieldTypeName = unbox(fieldTypeName);
     String putMethod = "";
 
-    if (TypeName.get(String.class).equals(unboxFieldTypeName)) {
+    if (stringTypeName.equals(unboxFieldTypeName)) {
       putMethod = "putString";
     } else if (TypeName.BOOLEAN.equals(unboxFieldTypeName)) {
       putMethod = "putBoolean";
@@ -370,7 +387,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
             propertyName, UTILS, propertyName, propertyName);
       }
     } else {
-      if (TypeName.get(String.class).equals(unboxFieldTypeName) || typeName.isPrimitive()) {
+      if (stringTypeName.equals(unboxFieldTypeName) || typeName.isPrimitive()) {
         builder.addStatement("editor.$L($S, obj." + valueL + ")", putMethod, propertyName);
       } else {
         builder.addStatement("$T.writeObject(context, name + $S, obj.$L)", FILE_OBJECT_UTIL,
@@ -381,7 +398,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   }
 
   private MethodSpec createPreferenceGetMethod(TypeName targetType, Set<Element> fieldElements,
-      Set<Element> setterElement) {
+      Set<fit.compiler.PropertyDescriptor> setterPropertyDescriptors) {
     MethodSpec.Builder result = MethodSpec.methodBuilder("get")
         .addAnnotation(Override.class)
         .addModifiers(PUBLIC)
@@ -398,9 +415,10 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     }
 
     //setter
-    for (Element method : setterElement) {
+    for (fit.compiler.PropertyDescriptor propertyDescriptor : setterPropertyDescriptors) {
+      Element method =propertyDescriptor.getSetter();
       TypeMirror typeMirror = ((ExecutableType) method.asType()).getParameterTypes().get(0);
-      genGetCode(true, result, typeMirror, method.getSimpleName().toString().substring(3),
+      genGetCode(true, result, typeMirror, propertyDescriptor.getField().getSimpleName().toString(),
           "obj." + method.getSimpleName() + "(");
     }
     result.addStatement("return obj").returns(targetType);
@@ -414,7 +432,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     String defaultValue = "0";
     String cast = "";
     String value = "$L sharedPreferences.$L($S, $L)";
-    if (TypeName.get(String.class).equals(fieldTypeName)) {
+    if (stringTypeName.equals(fieldTypeName)) {
       method = METHOD_GET_STRING;
       defaultValue = null;
     } else if (TypeName.BOOLEAN.equals(fieldTypeName)) {
@@ -469,6 +487,52 @@ import static javax.lang.model.element.Modifier.PUBLIC;
         propertyName, defaultValue);
   }
 
+  private MethodSpec createPreferenceClearFieldsMethod(Set<Element> fieldElements,
+      Set<fit.compiler.PropertyDescriptor> getterPropertyDescriptors) {
+    MethodSpec.Builder result = MethodSpec.methodBuilder("clearFields")
+        .addAnnotation(Override.class)
+        .addModifiers(PUBLIC)
+        .addParameter(CONTEXT, "context")
+        .addParameter(STRING, "name");
+
+    //属性
+    for (Element element : fieldElements) {
+      TypeName typeName = TypeName.get(element.asType());
+      if (isObject(typeName)) {
+        result.addStatement("$T.deleteFile(context, name + $S)", FILE_OBJECT_UTIL,
+            "." + element.getSimpleName().toString());
+      }
+    }
+
+    //getter
+      for (fit.compiler.PropertyDescriptor propertyDescriptor :getterPropertyDescriptors){
+
+      Element element = propertyDescriptor.getGetter();
+      TypeMirror typeMirror = ((ExecutableType) element.asType()).getReturnType();
+      TypeName typeName = TypeName.get(typeMirror);
+      String valueL = element.toString();
+
+      if (isObject(typeName)) {
+        result.addStatement("$T.deleteFile(context, name + $S)", FILE_OBJECT_UTIL,
+            "." + propertyDescriptor.getField().getSimpleName().toString());
+      }
+    }
+    return result.build();
+  }
+
+  /**
+   * @param typeName {@link Type}
+   * @return object is true,otherwise false
+   * @since 1.0.1
+   */
+  private boolean isObject(TypeName typeName) {
+    typeName = typeName.box();
+    return !(typeName.isBoxedPrimitive()
+        || stringTypeName.equals(typeName)
+        || setOfHoverboards.equals(typeName)
+        || hashSetOfHoverboards.equals(typeName));
+  }
+
   private TypeName unbox(TypeName typeName) {
     if (typeName.isBoxedPrimitive()) {
       return typeName.unbox();
@@ -500,9 +564,6 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   }
 
   @Override public Set<String> getSupportedAnnotationTypes() {
-    //Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
-    //annotations.add(SharedPreferenceAble.class);
-    //return annotations;
     return Collections.singleton(SharedPreferenceAble.class.getCanonicalName());
   }
 

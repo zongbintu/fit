@@ -11,4 +11,13 @@ public interface MM<T> {
   SharedPreferences.Editor save(Context context, String name, T obj);
 
   T get(Context context, String name);
+
+  /**
+   * clear Object fields
+   *
+   * @param context {@link Context}
+   * @param name SharedPreference's name
+   * @since 1.0.1
+   */
+  void clearFields(Context context, String name);
 }

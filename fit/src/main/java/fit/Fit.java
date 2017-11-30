@@ -3,6 +3,7 @@ package fit;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import fit.internal.FileObjectUtil;
 import fit.internal.Utils;
 
 /**
@@ -57,20 +58,44 @@ public final class Fit {
   }
 
   public static void clear(@NonNull Context context, @NonNull Class clazz) {
-    clear(context, clazz.getName());
+    clear(context, clazz, clazz.getName());
   }
 
-  public static void clear(@NonNull Context context, String name) {
+  public static void clear(@NonNull Context context, @NonNull Class clazz, String name) {
     Utils.apply(clearEditor(context, name));
+    instanceMM(clazz).clearFields(context,name);
   }
 
+  /**
+   * @param context {@link Context}
+   * @param clazz {@link Class}
+   * @return {@link SharedPreferences.Editor}
+   */
   @NonNull public static SharedPreferences.Editor clearEditor(@NonNull Context context,
       @NonNull Class clazz) {
     return clearEditor(context, clazz.getName());
   }
 
-  @NonNull
-  public static SharedPreferences.Editor clearEditor(@NonNull Context context, String name) {
+  /**
+   * @param context {@link Context}
+   * @param name SharedPreferences's name
+   * @return {@link SharedPreferences.Editor}
+   */
+  @NonNull public static SharedPreferences.Editor clearEditor(@NonNull Context context,
+      String name) {
     return Utils.getSharedPreferenceEditor(context, name).clear();
+  }
+
+  /**
+   * clear Object filed
+   *
+   * @param context {@link Context}
+   * @param name SharedPreferences's name
+   * @param fieldName clazz's Object field name.
+   * @return true if the Object field clear was successfully; else false.
+   * @since 1.0.1
+   */
+  public static boolean clearObjectField(Context context, String name, String fieldName) {
+    return FileObjectUtil.deleteFile(context, name + "." + fieldName);
   }
 }

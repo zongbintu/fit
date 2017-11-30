@@ -67,4 +67,16 @@ public final class FileObjectUtil {
     }
     return null;
   }
+
+  /**
+   * Delete the given private file associated with this Context's application package.
+   *
+   * @param context {@link Context}
+   * @param name The name of the file to delete; can not contain path separators.
+   * @return true if the file was successfully deleted; else false.
+   * @since 1.0.1
+   */
+  public static boolean deleteFile(Context context, String name) {
+    return context.deleteFile(name);
+  }
 }

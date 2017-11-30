@@ -1,5 +1,9 @@
 ## Changelog
 
+### Version 1.0.1(2017-11-30)
+
+* Fix:clear Object property.
+
 ### Version 1.0.0(2017-09-25)
 
 * New:save Enum,Array,Serializable.
