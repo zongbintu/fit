@@ -44,6 +44,8 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "  }\n"
         + "}");
 
     assertAbout(javaSource()).that(source)
@@ -82,6 +84,8 @@ public class SharedPreferenceAbleTest {
         + "    Test obj = new Test();\n"
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
         + "  }\n"
         + "}");
 
@@ -122,6 +126,8 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "  }\n"
         + "}");
 
     assertAbout(javaSource()).that(source)
@@ -148,20 +154,27 @@ public class SharedPreferenceAbleTest {
         + "import android.content.SharedPreferences;\n"
         + "import android.content.SharedPreferences.Editor;\n"
         + "import fit.MM;\n"
+        + "import fit.internal.FileObjectUtil;\n"
         + "import fit.internal.Utils;\n"
         + "import java.lang.Override;\n"
         + "import java.lang.String;\n"
+        + "import java.util.Date;\n"
         + "public class Test_Preference implements MM<Test> {\n"
         + "  @Override public Editor save(Context context, String name, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
         + "    editor.putString(\"aT\", obj.aT);\n"
+        + "    FileObjectUtil.writeObject(context, name + \".birthday\", obj.birthday);\n"
         + "    return editor;\n"
         + "  }\n"
         + "  @Override public Test get(Context context, String name) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
         + "    Test obj = new Test();\n"
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
+        + "    obj.birthday = (Date) FileObjectUtil.readObject(context, name + \".birthday\");\n"
         + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "    FileObjectUtil.deleteFile(context, name + \".birthday\");\n"
         + "  }\n"
         + "}");
 
@@ -208,6 +221,8 @@ public class SharedPreferenceAbleTest {
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "  }\n"
         + "}");
 
     JavaFileObject sharedSource3 = JavaFileObjects.forSourceString("test/TestTwo_Preference", ""
@@ -230,6 +245,8 @@ public class SharedPreferenceAbleTest {
         + "    TestTwo obj = new TestTwo();\n"
         + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
         + "  }\n"
         + "}");
 
@@ -286,14 +303,16 @@ public class SharedPreferenceAbleTest {
         + "public final class Test_Preference implements MM<Test> {\n"
         + "  @Override public Editor save(Context context, String name, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
-        + "    editor.putString(\"AT\", obj.getAT());\n"
+        + "    editor.putString(\"aT\", obj.getAT());\n"
         + "    return editor;\n"
         + "  }\n"
         + "  @Override public Test get(Context context, String name) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
         + "    Test obj = new Test();\n"
-        + "    obj.setAT(sharedPreferences.getString(\"AT\", null));\n"
+        + "    obj.setAT(sharedPreferences.getString(\"aT\", null));\n"
         + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
         + "  }\n"
         + "}");
 
@@ -334,14 +353,17 @@ public class SharedPreferenceAbleTest {
         + "public final class Test_Preference implements MM<Test> {\n"
         + "  @Override public Editor save(Context context, String name, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
-        + "    FileObjectUtil.writeObject(context, name + \".AT\", obj.getAT())\n"
+        + "    FileObjectUtil.writeObject(context, name + \".aT\", obj.getAT())\n"
         + "    return editor;\n"
         + "  }\n"
         + "  @Override public Test get(Context context, String name) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
         + "    Test obj = new Test();\n"
-        + "    obj.setAT((List<String>) FileObjectUtil.readObject(context, name + \".AT\"));\n"
+        + "    obj.setAT((List<String>) FileObjectUtil.readObject(context, name + \".aT\"));\n"
         + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "    FileObjectUtil.deleteFile(context, name + \".aT\");\n"
         + "  }\n"
         + "}");
 
@@ -385,6 +407,9 @@ public class SharedPreferenceAbleTest {
         + "    TestTwo obj = new TestTwo();\n"
         + "    obj.aT = (Test) FileObjectUtil.readObject(context, name + \".aT\");\n"
         + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "    FileObjectUtil.deleteFile(context, name + \".aT\");\n"
         + "  }\n"
         + "}");
 

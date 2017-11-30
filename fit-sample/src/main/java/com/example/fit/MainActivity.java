@@ -12,6 +12,7 @@ import com.example.fit.model.User;
 import com.example.fit.model.UserDonloadTsks;
 import fit.Fit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,6 +99,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     transientJob.setSalary(1d);
     transientJob.setTitle("transient job");
     user.setTransientJob(job);
+
+    user.setBirthDay(new Date());
 
     return user;
   }
