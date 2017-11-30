@@ -19,10 +19,10 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    compile 'com.github.2tu.fit:fit:1.0.0'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:1.0.0'
+    compile 'com.github.2tu.fit:fit:1.0.1'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:1.0.1'
     //use apt
-    //apt 'com.github.2tu.fit:fit-compiler:1.0.0'
+    //apt 'com.github.2tu.fit:fit-compiler:1.0.1'
 }
 ```
 
@@ -46,7 +46,7 @@ User user = Fit.get(context, "user", User.class);
 clear
 ```java
 Fit.clear(context, User.class);
-Fit.clear(context, "user");
+Fit.clear(context, User.class, "user");
 ```
 other
 ```java
@@ -54,6 +54,7 @@ Fit.get(context, "name").getBoolean("isFirst", false);
 SharedPreferences.Editor editor = Fit.edit(context, "name");
 editor.putBoolean("isFirst", true);
 editor.apply();
+Fit.clearObjectField(cotext, "user", "hobbies");
 ```
   
 ##  Q&A
