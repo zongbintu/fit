@@ -7,14 +7,14 @@ targetCompatibility = rootProject.ext.targetCompatibilityVersion
 group='com.github.2tu'
 
 dependencies {
-  compile project(':fit-annotations')
-  compile deps.autocommon
-  compile deps.javapoet
+  implementation project(':fit-annotations')
+  implementation deps.autocommon
+  implementation deps.javapoet
   compileOnly deps.autoservice
 
-  testCompile deps.android
-  testCompile deps.junit
-  testCompile deps.compiletesting
-  testCompile deps.truth
-  testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+  testImplementation deps.android
+  testImplementation deps.junit
+  testImplementation deps.compiletesting
+  testImplementation deps.truth
+  testImplementation files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }

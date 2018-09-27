@@ -25,6 +25,6 @@ android {
 }
 
 dependencies {
-  compile project(':fit')
+  implementation project(':fit')
   annotationProcessor project(':fit-compiler')
 }
