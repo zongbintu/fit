@@ -5,7 +5,7 @@ sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
 targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
 group = 'com.github.2tu'
-version = '1.0.2'
+version = '1.0.3'
 
 dependencies {
   implementation project(':fit-annotations')
