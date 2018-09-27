@@ -4,4 +4,5 @@ apply plugin: 'com.github.dcendents.android-maven'
 targetCompatibility = JavaVersion.VERSION_1_7
 sourceCompatibility = JavaVersion.VERSION_1_7
 
-group='com.github.2tu'
+group = 'com.github.2tu'
+version = '1.0.2'

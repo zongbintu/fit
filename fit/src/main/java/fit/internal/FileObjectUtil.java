@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import static fit.Fit.TAG;
 
@@ -25,6 +26,10 @@ public final class FileObjectUtil {
    * @param obj Type is String/Array/Serializable
    */
   public static void writeObject(Context context, String fileName, Object obj) {
+    if(!(obj instanceof Serializable)){
+      Log.w(TAG, "not implements Serializable");
+      return;
+    }
     FileOutputStream fileOutputStream = null;
     ObjectOutputStream objectOutputStream = null;
     try {
