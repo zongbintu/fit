@@ -21,7 +21,7 @@ allprojects {
   }
 }
 def supportLibraryVersion = '25.1.0'
-def fitVersion = '0.3.4'
+def fitVersion = '1.0.1'
 ext {
   minSdkVersion = 4
   targetSdkVersion = 25
