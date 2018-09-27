@@ -4,7 +4,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
 targetCompatibility = rootProject.ext.targetCompatibilityVersion
 
-group='com.github.2tu'
+group = 'com.github.2tu'
+version = '1.0.2'
 
 dependencies {
   implementation project(':fit-annotations')
