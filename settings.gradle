@@ -1,2 +1,1 @@
 include ':fit-sample', ':fit-annotations', ':fit-compiler', ':fit'
-rootProject.name = 'fit'
