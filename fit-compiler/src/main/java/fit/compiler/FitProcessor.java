@@ -8,12 +8,11 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import fit.PreferenceIgnore;
 import fit.SharedPreferenceAble;
-import java.beans.PropertyDescriptor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashSet;
@@ -124,6 +123,11 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
           if (kind == ElementKind.FIELD && !modifiers.contains(Modifier.TRANSIENT)) {
 
+            //ignore field
+            if (null != memberElement.getAnnotation(PreferenceIgnore.class)) {
+              continue;
+            }
+
             if (modifiers.contains(Modifier.PRIVATE)) {
               privateFieldElements.add(memberElement);
             } else {
@@ -182,7 +186,8 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           for (Element field : privateFieldElements) {
             if (field.getSimpleName().toString().equalsIgnoreCase(propertyName)) {
               getterElements.add(method);
-              fit.compiler.PropertyDescriptor propertyDescriptor = new fit.compiler.PropertyDescriptor();
+              fit.compiler.PropertyDescriptor propertyDescriptor =
+                  new fit.compiler.PropertyDescriptor();
               propertyDescriptor.setField(field);
               propertyDescriptor.setGetter(method);
               getterPropertyDescriptors.add(propertyDescriptor);
@@ -199,7 +204,8 @@ import static javax.lang.model.element.Modifier.PUBLIC;
           for (Element field : privateFieldElements) {
             if (field.getSimpleName().toString().equalsIgnoreCase(propertyName)) {
               setterElements.add(method);
-              fit.compiler.PropertyDescriptor propertyDescriptor = new fit.compiler.PropertyDescriptor();
+              fit.compiler.PropertyDescriptor propertyDescriptor =
+                  new fit.compiler.PropertyDescriptor();
               propertyDescriptor.setField(field);
               propertyDescriptor.setSetter(method);
               setterPropertyDescriptors.add(propertyDescriptor);
@@ -273,7 +279,8 @@ import static javax.lang.model.element.Modifier.PUBLIC;
   }
 
   private TypeSpec createPreferenceClass(ClassName preferenceClassName, boolean isFinal,
-      TypeName targetTypeName, Set<Element> fieldElements, Set<fit.compiler.PropertyDescriptor> getterPropertyDescriptors,
+      TypeName targetTypeName, Set<Element> fieldElements,
+      Set<fit.compiler.PropertyDescriptor> getterPropertyDescriptors,
       Set<fit.compiler.PropertyDescriptor> setterPropertyDescriptors) {
     TypeSpec.Builder result =
         TypeSpec.classBuilder(preferenceClassName.simpleName()).addModifiers(PUBLIC);
@@ -285,9 +292,11 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     ParameterizedTypeName parameterizedTypeName = ParameterizedTypeName.get(MM, targetTypeName);
     result.addSuperinterface(parameterizedTypeName);
 
-    result.addMethod(createPreferenceSaveMethod(targetTypeName, fieldElements, getterPropertyDescriptors));
+    result.addMethod(
+        createPreferenceSaveMethod(targetTypeName, fieldElements, getterPropertyDescriptors));
 
-    result.addMethod(createPreferenceGetMethod(targetTypeName, fieldElements, setterPropertyDescriptors));
+    result.addMethod(
+        createPreferenceGetMethod(targetTypeName, fieldElements, setterPropertyDescriptors));
 
     result.addMethod(createPreferenceClearFieldsMethod(fieldElements, getterPropertyDescriptors));
 
@@ -416,7 +425,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
 
     //setter
     for (fit.compiler.PropertyDescriptor propertyDescriptor : setterPropertyDescriptors) {
-      Element method =propertyDescriptor.getSetter();
+      Element method = propertyDescriptor.getSetter();
       TypeMirror typeMirror = ((ExecutableType) method.asType()).getParameterTypes().get(0);
       genGetCode(true, result, typeMirror, propertyDescriptor.getField().getSimpleName().toString(),
           "obj." + method.getSimpleName() + "(");
@@ -505,7 +514,7 @@ import static javax.lang.model.element.Modifier.PUBLIC;
     }
 
     //getter
-      for (fit.compiler.PropertyDescriptor propertyDescriptor :getterPropertyDescriptors){
+    for (fit.compiler.PropertyDescriptor propertyDescriptor : getterPropertyDescriptors) {
 
       Element element = propertyDescriptor.getGetter();
       TypeMirror typeMirror = ((ExecutableType) element.asType()).getReturnType();

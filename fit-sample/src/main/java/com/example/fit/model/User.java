@@ -1,5 +1,6 @@
 package com.example.fit.model;
 
+import fit.PreferenceIgnore;
 import fit.SharedPreferenceAble;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,6 +13,11 @@ import java.util.List;
 @SharedPreferenceAble public class User {
   public String name;
   public HashSet<String> hobby;
+  @PreferenceIgnore
+  public String aa;
+
+  @PreferenceIgnore
+  private Object cc;
 
   public byte tbyte;
   public short tshort;
@@ -216,6 +222,14 @@ import java.util.List;
 
   public Date getBirthDay() {
     return birthDay;
+  }
+
+  public Object getCc() {
+    return cc;
+  }
+
+  public void setCc(Object cc) {
+    this.cc = cc;
   }
 
   public void setBirthDay(Date birthDay) {
