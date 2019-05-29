@@ -162,15 +162,15 @@ public class SharedPreferenceAbleTest {
         + "public class Test_Preference implements MM<Test> {\n"
         + "  @Override public Editor save(Context context, String name, Test obj) {\n"
         + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
-        + "    editor.putString(\"aT\", obj.aT);\n"
         + "    FileObjectUtil.writeObject(context, name + \".birthday\", obj.birthday);\n"
+        + "    editor.putString(\"aT\", obj.aT);\n"
         + "    return editor;\n"
         + "  }\n"
         + "  @Override public Test get(Context context, String name) {\n"
         + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
         + "    Test obj = new Test();\n"
-        + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    obj.birthday = (Date) FileObjectUtil.readObject(context, name + \".birthday\");\n"
+        + "    obj.aT = sharedPreferences.getString(\"aT\", null);\n"
         + "    return obj;\n"
         + "  }\n"
         + "  @Override public void clearFields(Context context, String name) {\n"
@@ -419,5 +419,44 @@ public class SharedPreferenceAbleTest {
         .compilesWithoutWarnings()
         .and()
         .generatesSources(sharedSource2);
+  }
+
+  @Test public void sharedPreferenceAblePreferenceIgnore() {
+    JavaFileObject source = JavaFileObjects.forSourceString("test.Test",
+        "package test;\n"
+            + "import fit.SharedPreferenceAble;\n"
+            + "import fit.PreferenceIgnore;\n"
+            + "@SharedPreferenceAble public class Test {\n"
+            + "   @PreferenceIgnore public String aT;\n"
+            + "}");
+
+    JavaFileObject sharedSource = JavaFileObjects.forSourceString("test/Test_Preference", ""
+        + "package test;\n"
+        + "import android.content.Context;\n"
+        + "import android.content.SharedPreferences;\n"
+        + "import android.content.SharedPreferences.Editor;\n"
+        + "import fit.MM;\n"
+        + "import fit.internal.Utils;\n"
+        + "import java.lang.Override;\n"
+        + "import java.lang.String;\n"
+        + "public class Test_Preference implements MM<Test> {\n"
+        + "  @Override public Editor save(Context context, String name, Test obj) {\n"
+        + "    SharedPreferences.Editor editor = Utils.getSharedPreferenceEditor(context, name);\n"
+        + "    return editor;\n"
+        + "  }\n"
+        + "  @Override public Test get(Context context, String name) {\n"
+        + "    SharedPreferences sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);\n"
+        + "    Test obj = new Test();\n"
+        + "    return obj;\n"
+        + "  }\n"
+        + "  @Override public void clearFields(Context context, String name) {\n"
+        + "  }\n"
+        + "}");
+    assertAbout(javaSource()).that(source)
+        .withCompilerOptions("-Xlint:-processing")
+        .processedWith(new FitProcessor())
+        .compilesWithoutWarnings()
+        .and()
+        .generatesSources(sharedSource);
   }
 }
