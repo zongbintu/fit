@@ -1,17 +1,24 @@
 package com.example.fit.model;
 
+import fit.PreferenceIgnore;
 import fit.SharedPreferenceAble;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 /**
- * @auther Tu enum@foxmail.com
+ * @author Tu enum@foxmail.com
  * @date 16/8/25
  */
 @SharedPreferenceAble public class User {
   public String name;
+  private Address address;
   public HashSet<String> hobby;
+  @PreferenceIgnore
+  public String aa;
+
+  @PreferenceIgnore
+  private Object cc;
 
   public byte tbyte;
   public short tshort;
@@ -218,57 +225,53 @@ import java.util.List;
     return birthDay;
   }
 
+  public Object getCc() {
+    return cc;
+  }
+
+  public void setCc(Object cc) {
+    this.cc = cc;
+  }
+
   public void setBirthDay(Date birthDay) {
     this.birthDay = birthDay;
   }
 
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(Address address) {
+    this.address = address;
+  }
+
   @Override public String toString() {
-    return "User{"
-        + "name='"
-        + name
-        + '\''
-        + ", hobby="
-        + hobby
-        + ", tbyte="
-        + tbyte
-        + ", tshort="
-        + tshort
-        + ", age="
-        + age
-        + ", tlong="
-        + tlong
-        + ", tfloat="
-        + tfloat
-        + ", score="
-        + score
-        + ", tboolean="
-        + tboolean
-        + ", c="
-        + c
-        + ", sex="
-        + sex
-        + ", s="
-        + s
-        + ", integer="
-        + integer
-        + ", aLong="
-        + aLong
-        + ", aFloat="
-        + aFloat
-        + ", aDouble="
-        + aDouble
-        + ", aBoolean="
-        + aBoolean
-        + ", character="
-        + character
-        + ", hobbies="
-        + hobbies
-        + ", job="
-        + job
-        + ", birthDay="
-        + birthDay
-        + ", transientJob="
-        + transientJob
-        + '}';
+    return "User{" +
+        "name='" + name + '\'' +
+        ", address=" + address +
+        ", hobby=" + hobby +
+        ", aa='" + aa + '\'' +
+        ", cc=" + cc +
+        ", tbyte=" + tbyte +
+        ", tshort=" + tshort +
+        ", age=" + age +
+        ", tlong=" + tlong +
+        ", tfloat=" + tfloat +
+        ", score=" + score +
+        ", tboolean=" + tboolean +
+        ", c=" + c +
+        ", sex=" + sex +
+        ", s=" + s +
+        ", integer=" + integer +
+        ", aLong=" + aLong +
+        ", aFloat=" + aFloat +
+        ", aDouble=" + aDouble +
+        ", aBoolean=" + aBoolean +
+        ", character=" + character +
+        ", hobbies=" + hobbies +
+        ", job=" + job +
+        ", birthDay=" + birthDay +
+        ", transientJob=" + transientJob +
+        '}';
   }
 }
