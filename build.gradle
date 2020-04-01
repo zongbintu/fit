@@ -7,7 +7,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.0'
+    classpath 'com.android.tools.build:gradle:3.6.1'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
   }
 }
@@ -20,16 +20,15 @@ allprojects {
     google()
   }
 }
+
+ext.versions = [
+    'minSdkVersion': 11,
+    'targetSdkVersion': 29,
+    'compileSdkVersion': 29,
+    'release': '1.1.0',
+]
+
 def supportLibraryVersion = '25.1.0'
-def fitVersion = '1.0.3'
-ext {
-  minSdkVersion = 4
-  targetSdkVersion = 25
-  compileSdkVersion = 25
-  buildToolsVersion = '28.0.2'
-  sourceCompatibilityVersion = JavaVersion.VERSION_1_7
-  targetCompatibilityVersion = JavaVersion.VERSION_1_7
-}
 
 ext.deps = [// Android
             android           : 'com.google.android:android:4.0.1.2',
@@ -39,14 +38,13 @@ ext.deps = [// Android
             javapoet          : 'com.squareup:javapoet:1.9.0',
 
             // Test dependencies
-            fit               : "com.github.2tu.fit:fit:$fitVersion",
-            fitCompiler       : "com.github.2tu.fit:fit-compiler:$fitVersion",
             autoservice       : 'com.google.auto.service:auto-service:1.0-rc2',
             compiletesting    : 'com.google.testing.compile:compile-testing:0.9',
             autocommon        : 'com.google.auto:auto-common:0.8',
             truth             : 'com.google.truth:truth:0.28',
-            junit             : 'junit:junit:4.12'
-
+            junit             : 'junit:junit:4.12',
+'release': [ 'runtime': "com.github.2tu.fit:fit:${versions.release}",
+    'compiler': "com.github.2tu.fit:fit-compiler:${versions.release}"]
 ]
 
 task clean(type: Delete) {

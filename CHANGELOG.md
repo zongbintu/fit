@@ -1,5 +1,9 @@
 ## Changelog
 
+### Version 1.2.0(2020-04-01)
+
+* New: replace android SharedPreference.
+
 ### Version 1.1.0(2019-05-29)
 
 * New: @PreferenceIgnore ignore filed.
