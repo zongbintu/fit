@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import fit.internal.FileObjectUtil;
 import fit.internal.Utils;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by tu on 16/8/27.
@@ -83,7 +85,7 @@ public final class Fit {
    */
   @NonNull public static SharedPreferences.Editor clearEditor(@NonNull Context context,
       String name) {
-    return Utils.getSharedPreferenceEditor(context, name).clear();
+    return edit(context, name).clear();
   }
 
   /**
@@ -97,5 +99,158 @@ public final class Fit {
    */
   public static boolean clearObjectField(Context context, String name, String fieldName) {
     return FileObjectUtil.deleteFile(context, name + "." + fieldName);
+  }
+
+  /**
+   * Set a String value in the preferences editor
+   *
+   * @param key The name of the preference to modify.
+   * @param value The new value for the preference.
+   * @return Returns a reference to the same Editor object, so you can
+   * chain put calls together.
+   */
+  public static SharedPreferences.Editor putString(Context context, String key, String value) {
+    return putString(context, context.getPackageName(), key, value);
+  }
+
+  public static SharedPreferences.Editor putString(Context context, String name, String key,
+      String value) {
+    return edit(context, name).putString(key, value);
+  }
+
+  public static SharedPreferences.Editor putStringSet(Context context, String key,
+      Set<String> values) {
+    return putStringSet(context, context.getPackageName(), key, values);
+  }
+
+  public static SharedPreferences.Editor putStringSet(Context context, String name, String key,
+      Set<String> values) {
+    return edit(context, name).putStringSet(key, values);
+  }
+
+  public static SharedPreferences.Editor putInt(Context context, String key, int value) {
+    return putInt(context, context.getPackageName(), key, value);
+  }
+
+  public static SharedPreferences.Editor putInt(Context context, String name, String key,
+      int value) {
+    return edit(context, name).putInt(key, value);
+  }
+
+  public static SharedPreferences.Editor putLong(Context context, String key, long value) {
+    return putLong(context, context.getPackageName(), key, value);
+  }
+
+  public static SharedPreferences.Editor putLong(Context context, String name, String key,
+      long value) {
+    return edit(context, name).putLong(key, value);
+  }
+
+  public static SharedPreferences.Editor putFloat(Context context, String key, float value) {
+    return putFloat(context, context.getPackageName(), key, value);
+  }
+
+  public static SharedPreferences.Editor putFloat(Context context, String name, String key,
+      float value) {
+    return edit(context, name).putFloat(key, value);
+  }
+
+  public static SharedPreferences.Editor putBoolean(Context context, String key, boolean value) {
+    return putBoolean(context, context.getPackageName(), key, value);
+  }
+
+  public static SharedPreferences.Editor putBoolean(Context context, String name, String key,
+      boolean value) {
+    return edit(context, name).putBoolean(key, value);
+  }
+
+  public static SharedPreferences.Editor remove(Context context, String key) {
+    return remove(context, context.getPackageName(), key);
+  }
+
+  public static SharedPreferences.Editor remove(Context context, String name, String key) {
+    return edit(context, name).remove(key);
+  }
+
+  public static SharedPreferences.Editor clear(Context context, String name) {
+    return edit(context, name).clear();
+  }
+
+  public static SharedPreferences.Editor clear(Context context) {
+    return clear(context, context.getPackageName());
+  }
+
+  // ----------------------get
+  public static Map<String, ?> getAll(Context context, String name) {
+    return Utils.getSharedPreference(context, name).getAll();
+  }
+
+  public static Map<String, ?> getAll(Context context) {
+    return getAll(context, context.getPackageName());
+  }
+
+  public static String getString(Context context, String key, String defValue) {
+    return getString(context, context.getPackageName(), key, defValue);
+  }
+
+  public static String getString(Context context, String name, String key, String defValue) {
+    return Utils.getSharedPreference(context, name).getString(key, defValue);
+  }
+
+  public static Set<String> getStringSet(Context context, String key, Set<String> defValues) {
+    return getStringSet(context, context.getPackageName(), key, defValues);
+  }
+
+  public static Set<String> getStringSet(Context context, String name, String key,
+      Set<String> defValues) {
+    return Utils.getSharedPreference(context, name).getStringSet(key, defValues);
+  }
+
+  public static int getInt(Context context, String key, int defValue) {
+    return getInt(context, context.getPackageName(), key, defValue);
+  }
+
+  public static int getInt(Context context, String name, String key, int defValue) {
+    return Utils.getSharedPreference(context, name).getInt(key, defValue);
+  }
+
+  public static long getLong(Context context, String key, long defValue) {
+    return getLong(context, context.getPackageName(), key, defValue);
+  }
+
+  public static long getLong(Context context, String name, String key, long defValue) {
+    return Utils.getSharedPreference(context, name).getLong(key, defValue);
+  }
+
+  public static float getFloat(Context context, String key, float defValue) {
+    return getFloat(context, context.getPackageName(), key, defValue);
+  }
+
+  public static float getFloat(Context context, String name, String key, float defValue) {
+    return Utils.getSharedPreference(context, name).getFloat(key, defValue);
+  }
+
+  public static boolean getBoolean(Context context, String key, boolean defValue) {
+    return getBoolean(context, context.getPackageName(), key, defValue);
+  }
+
+  public static boolean getBoolean(Context context, String name, String key, boolean defValue) {
+    return Utils.getSharedPreference(context, name).getBoolean(key, defValue);
+  }
+
+  public static boolean contains(Context context, String key) {
+    return contains(context, context.getPackageName());
+  }
+
+  public static boolean contains(Context context, String name, String key) {
+    return Utils.getSharedPreference(context, name).contains(key);
+  }
+
+  public static SharedPreferences.Editor edit(Context context) {
+    return edit(context, context.getPackageName());
+  }
+
+  public static SharedPreferences.Editor edit(Context context, String name) {
+    return Utils.getSharedPreferenceEditor(context, name);
   }
 }

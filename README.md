@@ -19,8 +19,8 @@ Add the following dependency to your `build.gradle` file:
 
 ```
 dependencies {
-    implementation 'com.github.2tu.fit:fit:1.1.0'
-    annotationProcessor 'com.github.2tu.fit:fit-compiler:1.1.0'
+    implementation 'com.github.2tu.fit:fit:1.2.0'
+    annotationProcessor 'com.github.2tu.fit:fit-compiler:1.2.0'
 }
 ```
 
