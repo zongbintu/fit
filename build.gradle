@@ -28,8 +28,6 @@ ext.versions = [
     'release': '1.1.0',
 ]
 
-def supportLibraryVersion = '25.1.0'
-
 ext.deps = [// Android
             android           : 'com.google.android:android:4.0.1.2',
             androidGradle     : 'com.android.tools.build:gradle:2.2.2',

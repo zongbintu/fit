@@ -1,20 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion rootProject.ext.compileSdkVersion
-  buildToolsVersion rootProject.ext.buildToolsVersion
+  compileSdkVersion 29
 
   compileOptions {
-    sourceCompatibility = rootProject.ext.sourceCompatibilityVersion
-    targetCompatibility = rootProject.ext.targetCompatibilityVersion
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
   }
 
   defaultConfig {
     applicationId "com.example.fit"
-    minSdkVersion rootProject.ext.minSdkVersion
-    targetSdkVersion rootProject.ext.targetSdkVersion
+    minSdkVersion versions.minSdkVersion
+    targetSdkVersion versions.targetSdkVersion
     versionCode 1
-    versionName "1.0.3"
+    versionName "1.2.2"
   }
   buildTypes {
     release {
@@ -25,6 +24,6 @@ android {
 }
 
 dependencies {
-  implementation project(':fit')
-  annotationProcessor project(':fit-compiler')
+  implementation deps.release.runtime
+  annotationProcessor deps.release.compiler
 }

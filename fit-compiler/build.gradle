@@ -1,29 +1,21 @@
-apply plugin: 'com.android.application'
+apply plugin: 'java'
+apply plugin: 'com.github.dcendents.android-maven'
 
-android {
-  compileSdkVersion versions.compileSdkVersion
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
-  }
-
-  defaultConfig {
-    applicationId "com.example.fit"
-    minSdkVersion versions.minSdkVersion
-    targetSdkVersion versions.targetSdkVersion
-    versionCode 1
-    versionName "1.2.1"
-  }
-  buildTypes {
-    release {
-      minifyEnabled true
-      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-    }
-  }
-}
+group = 'com.github.2tu'
+version = '1.2.2'
 
 dependencies {
-  implementation deps.release.runtime
-  annotationProcessor deps.release.compiler
+  implementation project(':fit-annotations')
+  implementation deps.autocommon
+  implementation deps.javapoet
+  compileOnly deps.autoservice
+
+  testImplementation deps.android
+  testImplementation deps.junit
+  testImplementation deps.compiletesting
+  testImplementation deps.truth
+  testImplementation files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
 }
