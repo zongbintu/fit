@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.2tu'
-version = '1.2.0'
+version = '1.2.1'
 
 android {
   compileSdkVersion versions.compileSdkVersion
@@ -14,7 +14,6 @@ android {
 }
 dependencies {
   api project(':fit-annotations')
-  implementation deps.supportAnnotations
 }
 
 // build a jar with source files
