@@ -1,6 +1,6 @@
 ## Changelog
 
-### Version 1.2.0(2020-04-01)
+### Version 1.2.1(2020-04-01)
 
 * New: replace android SharedPreference.
 

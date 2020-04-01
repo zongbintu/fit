@@ -2,7 +2,6 @@ package fit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import fit.internal.FileObjectUtil;
 import fit.internal.Utils;
 import java.util.Map;
@@ -32,40 +31,39 @@ public final class Fit {
     return (Class<? extends MM>) Class.forName(clazz.getName() + "_Preference");
   }
 
-  public static void save(@NonNull Context context, @NonNull Object o) {
+  public static void save(Context context, Object o) {
     save(context, o.getClass().getName(), o);
   }
 
-  public static void save(@NonNull Context context, String name, @NonNull Object o) {
+  public static void save(Context context, String name, Object o) {
     Utils.apply(saveEditor(context, name, o));
   }
 
-  @NonNull
-  public static SharedPreferences.Editor saveEditor(@NonNull Context context, @NonNull Object o) {
+  public static SharedPreferences.Editor saveEditor(Context context, Object o) {
     return saveEditor(context, o.getClass().getName(), o);
   }
 
-  @NonNull public static SharedPreferences.Editor saveEditor(@NonNull Context context, String name,
-      @NonNull Object o) {
+  public static SharedPreferences.Editor saveEditor(Context context, String name,
+      Object o) {
     Class clazz = o.getClass();
     return instanceMM(clazz).save(context, name, o);
   }
 
-  public static <T> T get(@NonNull Context context, @NonNull Class<T> clazz) {
+  public static <T> T get(Context context, Class<T> clazz) {
     return get(context, clazz.getName(), clazz);
   }
 
-  public static <T> T get(@NonNull Context context, String name, @NonNull Class<T> clazz) {
+  public static <T> T get(Context context, String name, Class<T> clazz) {
     return (T) instanceMM(clazz).get(context, name);
   }
 
-  public static void clear(@NonNull Context context, @NonNull Class clazz) {
+  public static void clear(Context context, Class clazz) {
     clear(context, clazz, clazz.getName());
   }
 
-  public static void clear(@NonNull Context context, @NonNull Class clazz, String name) {
+  public static void clear(Context context, Class clazz, String name) {
     Utils.apply(clearEditor(context, name));
-    instanceMM(clazz).clearFields(context,name);
+    instanceMM(clazz).clearFields(context, name);
   }
 
   /**
@@ -73,8 +71,8 @@ public final class Fit {
    * @param clazz {@link Class}
    * @return {@link SharedPreferences.Editor}
    */
-  @NonNull public static SharedPreferences.Editor clearEditor(@NonNull Context context,
-      @NonNull Class clazz) {
+  public static SharedPreferences.Editor clearEditor(Context context,
+      Class clazz) {
     return clearEditor(context, clazz.getName());
   }
 
@@ -83,7 +81,7 @@ public final class Fit {
    * @param name SharedPreferences's name
    * @return {@link SharedPreferences.Editor}
    */
-  @NonNull public static SharedPreferences.Editor clearEditor(@NonNull Context context,
+  public static SharedPreferences.Editor clearEditor(Context context,
       String name) {
     return edit(context, name).clear();
   }

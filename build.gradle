@@ -33,7 +33,6 @@ def supportLibraryVersion = '25.1.0'
 ext.deps = [// Android
             android           : 'com.google.android:android:4.0.1.2',
             androidGradle     : 'com.android.tools.build:gradle:2.2.2',
-            supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
             // Square
             javapoet          : 'com.squareup:javapoet:1.9.0',
 
