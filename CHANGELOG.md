@@ -1,8 +1,9 @@
 ## Changelog
 
-### Version 1.2.2(2020-04-01)
+### Version 1.2.3(2020-04-02)
 
 * New: replace android SharedPreference.
+* Fix: annotationProcessor not work.
 
 ### Version 1.1.0(2019-05-29)
 
