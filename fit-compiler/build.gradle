@@ -12,6 +12,7 @@ dependencies {
   implementation deps.autocommon
   implementation deps.javapoet
   compileOnly deps.autoservice
+  annotationProcessor deps.autoservice
 
   testImplementation deps.android
   testImplementation deps.junit
