@@ -5,7 +5,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 group = 'com.github.2tu'
-version = '1.2.2'
+version = '1.2.3'
 
 dependencies {
   implementation project(':fit-annotations')
